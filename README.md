@@ -42,6 +42,9 @@
 - `assignemnt3_spk.ipynb`: Examples of using ESPnet to extract speaker embeddings and conduct speaker recognition.
 - `assignment4_ssl.ipynb`: Exploration on using self-supervised speech representation to ESPnet ASR training.
 - `assignment5_st.ipynb`: Examples of state-of-the-art speech translation models in ESPnet.
+- `assignment6_slu.ipynb`: Examples of state-of-the-art spoken language understanding models in ESPnet.
+- `assignment7_se.ipynb`: Examples of state-of-the-art speech enhancement/separation in ESPnet.
+- `assignment8_tts.ipynb`: A student version of espnet2-tts realtime demonstration.
 - `s2st_demo.ipynb`: An example of existing speech-to-speech translation model for ESPnet.
 
 #### CMU SpeechRecognition Fall2022
