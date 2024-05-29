@@ -1,0 +1,15 @@
+use_adapter: true
+adapter: lora
+save_strategy: adapter
+adapter_conf:
+  rank: 4
+  alpha: 4
+  dropout_rate: 0.1
+  target_modules:
+    - self_attn.linear_q
+    - self_attn.linear_k
+    - self_attn.linear_v
+    - self_attn.linear_out
+    - emb
+
+freeze_param: ["tts.generator"]
