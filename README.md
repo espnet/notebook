@@ -26,6 +26,20 @@
 - [`onnx_conversion_demo.ipynb`](ESPnet2/Demo/Others/onnx_conversion_demo.ipynb): How to convert ESPnet models into ONNX format.
 
 
+## ESPnet-EZ
+
+### ASR (Speech recognition)
+- [`train_from_scratch.ipynb`](ESPnetEZ/ASR/train_from_scratch.ipynb): Training an ASR model with ESPnet-EZ on LibriSpeech-100.
+- [`ASR_finetune_owsm.ipynb`](ESPnetEZ/ASR/ASR_finetune_owsm.ipynb): Fine-tuning the weakly-supervised model (OWSM) with ESPnet-EZ on custom dataset.
+
+### ST (Speech-to-text translation)
+- [`integrate_huggingface.ipynb`](ESPnetEZ/ST/integrate_huggingface.ipynb): Integrating the weakly-supervised model (OWSM) and huggingface's pre-trained language model with ESPnet-EZ on MuST-C-v2.
+- [`ST_finetune_owsm.ipynb`](ESPnetEZ/ST/ST_finetune_owsm.ipynb): Fine-tuning the weakly-supervised model (OWSM) with ESPnet-EZ on MuST-C-v2.
+
+### SLU (Spoken language understanding)
+- [`SLU_finetune_owsm.ipynb`](ESPnetEZ/SLU/SLU_finetune_owsm.ipynb): Fine-tuning the weakly-supervised model (OWSM) with ESPnet-EZ on SLURP.
+
+
 ## Course
 
 ### CMU SpeechProcessing Spring2023
