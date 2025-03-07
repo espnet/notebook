@@ -39,6 +39,12 @@
 ### SLU (Spoken language understanding)
 - [`SLU_finetune_owsm.ipynb`](ESPnetEZ/SLU/SLU_finetune_owsm.ipynb): Fine-tuning the weakly-supervised model (OWSM) with ESPnet-EZ on SLURP.
 
+### TTS (Text-to-speech)
+- [`TTS_finetune_vctk_dump.ipynb`](ESPnetEZ/TTS/TTS_finetune_vctk_dump.ipynb): Fine-tuning a pre-trained VITS model with ESPnet-EZ on the VCTK dataset.
+
+### SVS (Singing voice synthesis)
+- [`SVS_finetune_ace-kising.ipynb`](ESPnetEZ/SVS/SVS_finetune_ace-kising.ipynb): Fine-tuning a pre-trained VISinger 2 model with ESPnet-EZ on ACE-KiSing.
+
 
 ## Course
 
