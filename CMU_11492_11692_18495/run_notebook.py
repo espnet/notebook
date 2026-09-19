@@ -61,7 +61,12 @@ def localise(source: str) -> str:
                 + f'_u.urlopen("{url}", context=_c).read())'
             )
         elif tar:
-            lines.append(f'import tarfile as _t; _t.open("{tar.group(1)}").extractall(".")')
+            # filter="data" refuses absolute and ../ members: these archives
+            # come off the network, one of them over an unverified connection
+            lines.append(
+                f'import tarfile as _t; '
+                f'_t.open("{tar.group(1)}").extractall(".", filter="data")'
+            )
         elif unzip:
             lines.append(
                 f'import zipfile as _z; _z.ZipFile("{unzip.group(1)}").extractall(".")'

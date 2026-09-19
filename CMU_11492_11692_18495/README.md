@@ -1,5 +1,7 @@
 # CMU 11492/11692/18495: Speech Technology for Conversational AI
 
+Spring 2026.
+
 The demonstration notebooks from the course, kept here so that they keep
 working: the graded exercises are removed, the installs point at released
 ESPnet rather than at anyone's fork, and each one is run before it is changed.
@@ -39,16 +41,12 @@ a notebook that stops working is noticed here rather than in class.
   gone, along with the empty answer cells they belonged to.
 - Sections that record your voice in the browser are gone: they only work in
   Colab and they cannot be checked automatically.
-- **Models come from the Hub, not from Google Drive.** Three notebooks loaded
-  checkpoints from Drive links; those now load by tag from the [ESPnet
-  organisation](https://huggingface.co/espnet), which also removes the
-  dependency on git-lfs being installed.
-- **TIDIGITS is replaced by [Google Speech
-  Commands](https://arxiv.org/abs/1804.03209)** in the ASR notebook. TIDIGITS
-  is licensed by the LDC and cannot be redistributed. The replacement keeps
-  twelve words - *yes*, *no* and the digits - and streams only those out of
-  the archive, and it splits by speaker so the word error rate means
-  something.
+- **Models come from the Hub where the Hub has them.** The enhancement
+  notebook loaded three checkpoints from Google Drive; all three now load by
+  tag from the [ESPnet organisation](https://huggingface.co/espnet), which
+  also removes the dependency on git-lfs being installed. The two English to
+  Spanish translation models are not published there, so those stay on Drive
+  and the notebook says why.
 - `espnet.asr.asr_utils.plot_spectrogram` and `torch_complex` were ESPnet1,
   which no longer exists. The spectrograms are drawn from `Stft` output.
 - Paths are relative instead of rooted at `/content`, and `device="cuda"` is

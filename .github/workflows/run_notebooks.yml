@@ -43,10 +43,12 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
-          # the notebooks install espnet themselves; the runner skips those
-          # cells, so install the same thing here
-          python -m pip install espnet nbclient nbformat ipykernel \
-            librosa scikit-learn matplotlib tqdm soundfile
+          # the runner skips the notebooks' install cells, so install what
+          # they would have installed - from the same place they install it
+          # from, or a break on master would pass here and fail in Colab
+          python -m pip install "espnet[enh] @ git+https://github.com/espnet/espnet"
+          python -m pip install nbclient nbformat ipykernel \
+            librosa scikit-learn matplotlib tqdm soundfile editdistance
 
       - name: Run ${{ matrix.notebook }}
         working-directory: CMU_11492_11692_18495

@@ -42,7 +42,6 @@ full list and what was changed.
 
 ### CMU SpeechProcessing Spring2023
 
-- [`assignment0_data-prep.ipynb`](ESPnet2/Course/CMU_SpeechProcessing_Spring2023/assignment0_data-prep.ipynb): Course assignment on how to prepare ESPnet-format data.
 - [`assignment1_espnet-tutorial.ipynb`](ESPnet2/Course/CMU_SpeechProcessing_Spring2023/assignment1_espnet-tutorial.ipynb): A simplified version of previous year's new task tutorial.
 - [`assignemnt3_spk.ipynb`](ESPnet2/Course/CMU_SpeechProcessing_Spring2023/assignment3_spk.ipynb): Examples of using ESPnet to extract speaker embeddings and conduct speaker recognition.
 - [`assignment4_ssl.ipynb`](ESPnet2/Course/CMU_SpeechProcessing_Spring2023/assignment4_ssl.ipynb): Exploration on using self-supervised speech representation to ESPnet ASR training.
