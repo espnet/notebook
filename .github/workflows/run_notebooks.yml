@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - "CMU_11492_11692_18495/**"
+      - "Courses/CMUSpeechTechnology26S/**"
       - ".github/workflows/run_notebooks.yml"
 
 permissions:
@@ -51,5 +51,5 @@ jobs:
             librosa scikit-learn matplotlib tqdm soundfile editdistance
 
       - name: Run ${{ matrix.notebook }}
-        working-directory: CMU_11492_11692_18495
+        working-directory: Courses/CMUSpeechTechnology26S
         run: python run_notebook.py "${{ matrix.notebook }}" --timeout 4800

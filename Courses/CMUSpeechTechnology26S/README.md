@@ -1,6 +1,6 @@
-# CMU 11492/11692/18495: Speech Technology for Conversational AI
+# CMUSpeechTechnology26S
 
-Spring 2026.
+CMU 11492/11692/18495, *Speech Technology for Conversational AI*, Spring 2026.
 
 The demonstration notebooks from the course, kept here so that they keep
 working: the graded exercises are removed, the installs point at released
