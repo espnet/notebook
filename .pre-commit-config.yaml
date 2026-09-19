@@ -1,0 +1,17 @@
+# The file this replaces was named `.pre.commit-config.yaml` and was empty, so
+# pre-commit.ci failed on every pull request with "error during ci config"
+# rather than checking anything.
+#
+# The hooks are deliberately conservative: a notebook is JSON, and a formatter
+# that rewrites cells would turn every review into a diff of machine output.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-json          # a notebook that will not open is caught here
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-added-large-files
+        args: ["--maxkb=2048"]  # notebooks carry audio and images in outputs

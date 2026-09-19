@@ -60,4 +60,3 @@ full list and what was changed.
 ### CMU SpeechRecognition Fall2021
 
 - [`general_tutorial.ipynb`](ESPnet2/Course/CMU_SpeechRecognition_Fall2021/general_tutorial.ipynb): A general tutorial of stage-by-stage explanation of ESPnet2 recipes.
-
