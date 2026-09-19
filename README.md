@@ -26,27 +26,19 @@
 - [`onnx_conversion_demo.ipynb`](ESPnet2/Demo/Others/onnx_conversion_demo.ipynb): How to convert ESPnet models into ONNX format.
 
 
-## ESPnet-EZ
-
-### ASR (Speech recognition)
-- [`train_from_scratch.ipynb`](ESPnetEZ/ASR/train_from_scratch.ipynb): Training an ASR model with ESPnet-EZ on LibriSpeech-100.
-- [`ASR_finetune_owsm.ipynb`](ESPnetEZ/ASR/ASR_finetune_owsm.ipynb): Fine-tuning the weakly-supervised model (OWSM) with ESPnet-EZ on custom dataset.
-
-### ST (Speech-to-text translation)
-- [`integrate_huggingface.ipynb`](ESPnetEZ/ST/integrate_huggingface.ipynb): Integrating the weakly-supervised model (OWSM) and huggingface's pre-trained language model with ESPnet-EZ on MuST-C-v2.
-- [`ST_finetune_owsm.ipynb`](ESPnetEZ/ST/ST_finetune_owsm.ipynb): Fine-tuning the weakly-supervised model (OWSM) with ESPnet-EZ on MuST-C-v2.
-
-### SLU (Spoken language understanding)
-- [`SLU_finetune_owsm.ipynb`](ESPnetEZ/SLU/SLU_finetune_owsm.ipynb): Fine-tuning the weakly-supervised model (OWSM) with ESPnet-EZ on SLURP.
-
-### TTS (Text-to-speech)
-- [`TTS_finetune_vctk_dump.ipynb`](ESPnetEZ/TTS/TTS_finetune_vctk_dump.ipynb): Fine-tuning a pre-trained VITS model with ESPnet-EZ on the VCTK dataset.
-
-### SVS (Singing voice synthesis)
-- [`SVS_finetune_ace-kising.ipynb`](ESPnetEZ/SVS/SVS_finetune_ace-kising.ipynb): Fine-tuning a pre-trained VISinger 2 model with ESPnet-EZ on ACE-KiSing.
-
-
 ## Course
+
+### CMU 11492/11692/18495: Speech Technology for Conversational AI
+
+Maintained: the graded exercises are removed and each notebook is run before
+it is changed. See [`CMU_11492_11692_18495/`](CMU_11492_11692_18495) for the
+full list and what was changed.
+
+- [`speaker_verification.ipynb`](CMU_11492_11692_18495/speaker_verification.ipynb): Speaker embeddings with ESPnet-SPK, verification, and a simple diarization.
+- [`speech_enhancement.ipynb`](CMU_11492_11692_18495/speech_enhancement.ipynb): Enhancement and separation, scored with VERSA and a pretrained ASR model.
+- [`neural_codec.ipynb`](CMU_11492_11692_18495/neural_codec.ipynb): Three pretrained neural codecs and the bitrate trade between them.
+- [`speech_translation.ipynb`](CMU_11492_11692_18495/speech_translation.ipynb): Offline and simultaneous speech translation with ESPnet-ST-v2.
+- [`text_to_speech.ipynb`](CMU_11492_11692_18495/text_to_speech.ipynb): Single-speaker and multi-speaker synthesis, and VERSA scores.
 
 ### CMU SpeechProcessing Spring2023
 
@@ -69,11 +61,3 @@
 
 - [`general_tutorial.ipynb`](ESPnet2/Course/CMU_SpeechRecognition_Fall2021/general_tutorial.ipynb): A general tutorial of stage-by-stage explanation of ESPnet2 recipes.
 
-## ESPnet1 (Legacy)
-
-- [`asr_library.ipynb`](ESPnet1/asr_library.ipynb): Speech recognition library explanation with network training.
-- [`asr_recipe.ipynb`](ESPnet1/asr_recipe.ipynb): Speech recognition recipe explanation.
-- [`pretrained.ipynb`](ESPnet1/pretrained.ipynb): Tutorial on how to use pre-trained models.
-- [`st_demo.ipynb`](ESPnet1/st_demo.ipynb): Speech translation demonstration with a TTS model to achieve speech-to-speech translation.
-- [`tts_realtime_demo.ipynb`](ESPnet1/tts_realtime_demo.ipynb): TTS demonstration with different pre-trained TTS models.
-- [`tts_recipe.ipynb`](ESPnet1/tts_recipe.ipynb): Stage explanation for TTS recipes.

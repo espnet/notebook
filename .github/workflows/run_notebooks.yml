@@ -1,0 +1,53 @@
+# These notebooks rot quietly: a Colab page still opens, the cells still look
+# right, and the failure only appears when somebody runs them in class. So run
+# them here on a schedule instead, against the released espnet.
+#
+# Only the inference notebooks run: the two fine-tuning ones need a GPU to
+# finish in reasonable time, and the TTS one needs a vocoder package that does
+# not build on every runner. Add more as they prove they fit.
+
+name: run notebooks
+
+on:
+  schedule:
+    # Sundays, 05:00 UTC
+    - cron: "0 5 * * 0"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "CMU_11492_11692_18495/**"
+      - ".github/workflows/run_notebooks.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        notebook:
+          - speaker_verification.ipynb
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          # the notebooks install espnet themselves; the runner skips those
+          # cells, so install the same thing here
+          python -m pip install espnet nbclient nbformat ipykernel \
+            librosa scikit-learn matplotlib tqdm soundfile
+
+      - name: Run ${{ matrix.notebook }}
+        working-directory: CMU_11492_11692_18495
+        run: python run_notebook.py "${{ matrix.notebook }}" --timeout 4800
