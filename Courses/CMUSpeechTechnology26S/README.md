@@ -23,13 +23,13 @@ updated to the current one.
 
 ## Running them outside Colab
 
-`run_notebook.py` executes one of them here: it skips the install cells, since
+`../../tools/run_notebook.py` executes one of them here: it skips the install cells, since
 the packages are already present, and replaces `wget` and `tar` with their
 Python equivalents.
 
 ```sh
 pip install espnet nbclient nbformat ipykernel librosa scikit-learn matplotlib
-python run_notebook.py speaker_verification.ipynb
+python ../../tools/run_notebook.py speaker_verification.ipynb
 ```
 
 `.github/workflows/run_notebooks.yml` runs the inference notebooks weekly, so

@@ -52,4 +52,4 @@ jobs:
 
       - name: Run ${{ matrix.notebook }}
         working-directory: Courses/CMUSpeechTechnology26S
-        run: python run_notebook.py "${{ matrix.notebook }}" --timeout 4800
+        run: python ../../tools/run_notebook.py "${{ matrix.notebook }}" --timeout 4800

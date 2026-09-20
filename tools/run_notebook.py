@@ -41,11 +41,22 @@ def localise(source: str) -> str:
     """Rewrite the shell lines this machine cannot run."""
     lines = []
     for line in source.split("\n"):
-        wget = re.match(r"\s*!\s*wget\s+(\S+)(?:\s+-O\s+(\S+))?.*", line)
+        # the flags can come in any order and any number: -q -O name url,
+        # url -O name, --no-check-certificate url. Take the first argument
+        # that looks like a URL, and the one after -O if there is one.
+        wget = re.match(r"\s*!\s*wget\s+(.*)", line)
         tar = re.match(r"\s*!\s*tar\s+-\w+\s+(\S+)", line)
         unzip = re.match(r"\s*!\s*unzip\s+(?:-\w+\s+)?(\S+)", line)
         if wget:
-            url, out = wget.group(1), wget.group(2) or ""
+            words = wget.group(1).split()
+            url = next((w for w in words if "://" in w), "")
+            out = ""
+            if "-O" in words:
+                index = words.index("-O") + 1
+                out = words[index] if index < len(words) else ""
+            if not url:
+                lines.append(line)
+                continue
             name = out or url.rsplit("/", 1)[-1]
             # honour --no-check-certificate: openslr's certificate is why the
             # notebook passes it, and urlretrieve verifies by default
