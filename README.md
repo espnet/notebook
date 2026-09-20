@@ -38,15 +38,15 @@ the reader.
 CMU 11492/11692/18495, *Speech Technology for Conversational AI*, Spring 2026 —
 the demonstration notebooks, with the graded exercises removed. In
 [`Courses/CMUSpeechTechnology26S/`](Courses/CMUSpeechTechnology26S), which also
-says what stops the one that does not run weekly.
+says how each is kept running.
 
 | Notebook | | What it does |
 |---|---|---|
 | [`speaker_verification.ipynb`](Courses/CMUSpeechTechnology26S/speaker_verification.ipynb) | [![speaker_verification](https://github.com/espnet/notebook/actions/workflows/speaker_verification.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speaker_verification.yml) | Speaker embeddings with ESPnet-SPK, verification, and a simple diarization |
+| [`speech_enhancement.ipynb`](Courses/CMUSpeechTechnology26S/speech_enhancement.ipynb) | [![speech_enhancement](https://github.com/espnet/notebook/actions/workflows/speech_enhancement.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_enhancement.yml) | Enhancement and separation, scored with VERSA and a pretrained ASR model |
 | [`text_to_speech.ipynb`](Courses/CMUSpeechTechnology26S/text_to_speech.ipynb) | [![text_to_speech](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml) | Single-speaker and multi-speaker synthesis, and VERSA scores |
 | [`neural_codec.ipynb`](Courses/CMUSpeechTechnology26S/neural_codec.ipynb) | [![neural_codec](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml) | Three pretrained neural codecs and the bitrate trade between them |
 | [`speech_translation.ipynb`](Courses/CMUSpeechTechnology26S/speech_translation.ipynb) | [![speech_translation](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml) | Offline and simultaneous speech translation with ESPnet-ST-v2 |
-| [`speech_enhancement.ipynb`](Courses/CMUSpeechTechnology26S/speech_enhancement.ipynb) | needs a sample we may share | Enhancement and separation, scored with VERSA and a pretrained ASR model |
 
 ### Earlier courses
 
