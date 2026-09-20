@@ -15,3 +15,14 @@ repos:
       - id: trailing-whitespace
       - id: check-added-large-files
         args: ["--maxkb=2048"]  # notebooks carry audio and images in outputs
+
+  # The rule Demos/README.md states, in a form that fails. A convention
+  # written only in prose is one nobody notices breaking.
+  - repo: local
+    hooks:
+      - id: demos-layout
+        name: Demos/ layout and pins
+        entry: python tools/check_layout.py
+        language: system
+        pass_filenames: false
+        files: ^Demos/
