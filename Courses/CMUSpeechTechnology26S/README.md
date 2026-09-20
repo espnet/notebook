@@ -21,11 +21,21 @@ out - see [What was changed](#what-was-changed).
 | [`text_to_speech.ipynb`](text_to_speech.ipynb) | [![text_to_speech](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml) | Single-speaker and multi-speaker synthesis, and VERSA scores |
 | [`neural_codec.ipynb`](neural_codec.ipynb) | [![neural_codec](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml) | Three pretrained neural codecs and the bitrate trade between them |
 | [`speech_translation.ipynb`](speech_translation.ipynb) | [![speech_translation](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml) | Offline and simultaneous speech translation with ESPnet-ST-v2 |
-| [`owsm_finetuning.ipynb`](owsm_finetuning.ipynb) | [![owsm_finetuning](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning.yml) | Fine-tune OWSM on one language of FLEURS with the ESPnet3 trainer |
-| [`owsm_finetuning_ctc.ipynb`](owsm_finetuning_ctc.ipynb) | [![owsm_finetuning_ctc](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning_ctc.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning_ctc.yml) | Fine-tune on a small spoken-digit corpus, then CTC against beam search |
+| [`owsm_finetuning.ipynb`](owsm_finetuning.ipynb) | [![owsm_finetuning](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning.yml) | Fine-tune OWSM on one language of FLEURS with the ESPnet3 trainer — **badge is a short run**, see below |
+| [`owsm_finetuning_ctc.ipynb`](owsm_finetuning_ctc.ipynb) | [![owsm_finetuning_ctc](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning_ctc.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning_ctc.yml) | Fine-tune on a small spoken-digit corpus, then CTC against beam search — **badge is a short run**, see below |
 
-All five run every Sunday, each on its own workflow, cell by cell, against the
-release the notebook pins. A badge is that notebook and nothing else.
+All seven run every Sunday, each on its own workflow, cell by cell, against
+the release the notebook pins. A badge is that notebook and nothing else.
+
+**The two fine-tuning badges mean less than the other five, and their labels
+say so.** A free runner cannot fine-tune at full size, so their workflows set
+a handful of environment variables — two steps instead of three hundred, eight
+utterances instead of a split — and the badge is labelled *(short run)*
+because of it. Green there means the notebook installs, finds its data and
+still agrees with ESPnet3's API. It does **not** mean the fine-tuning worked
+or that the word error rates printed in the notebook were reproduced; nothing
+in CI checks those. A reader who opens either notebook gets the full run, and
+each says the same thing in its first cell.
 
 ## Samples the course used and this repository cannot carry
 

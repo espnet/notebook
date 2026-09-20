@@ -8,7 +8,7 @@
 # A reader who opens the notebook gets the full run; this checks that it still
 # installs, still finds its data, and still agrees with ESPnet3's API.
 
-name: owsm_finetuning_ctc
+name: "owsm_finetuning_ctc (short run)"
 
 on:
   schedule:
