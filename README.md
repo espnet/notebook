@@ -6,7 +6,8 @@ Notebooks for [ESPnet](https://github.com/espnet/espnet): short demos of what
 the toolkit does, and the material from the CMU speech courses.
 
 The badge is the demos below, executed cell by cell every Sunday against the
-release they pin. Nothing goes in that list until it runs there.
+release they pin. Nothing goes in that list until it runs there —
+[what green means, and what it does not](Demos/README.md#what-green-means-and-what-it-does-not).
 
 ## Demos
 

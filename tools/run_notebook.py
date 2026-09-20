@@ -27,6 +27,27 @@ INSTALL_LINE = re.compile(
 )
 
 
+def logical_lines(source: str):
+    """The cell's lines, with backslash continuations joined.
+
+    Yields (joined text, the physical lines it came from). A shell line split
+    over three lines is one command, and treating it as three is how the
+    second and third end up in the cell as stray Python.
+    """
+    physical = source.split("\n")
+    index = 0
+    while index < len(physical):
+        group = [physical[index]]
+        while group[-1].rstrip().endswith("\\") and index + 1 < len(physical):
+            index += 1
+            group.append(physical[index])
+        joined = " ".join(line.rstrip().rstrip("\\").strip() for line in group)
+        if len(group) == 1:
+            joined = group[0]
+        yield joined, group
+        index += 1
+
+
 def drop_installs(source: str) -> str:
     """Remove the install lines, keeping whatever else the cell does.
 
@@ -36,13 +57,16 @@ def drop_installs(source: str) -> str:
     An indented install becomes `pass` rather than disappearing. The model
     chooser installs S3PRL only for the front-ends that need it, and deleting
     the body of an `if` leaves the `if` with nothing under it.
+
+    A continued command goes entirely, all of its lines: dropping the first
+    and keeping the rest leaves the arguments behind as Python.
     """
     kept = []
-    for line in source.split("\n"):
-        if not INSTALL_LINE.match(line):
-            kept.append(line)
+    for joined, group in logical_lines(source):
+        if not INSTALL_LINE.match(joined):
+            kept.extend(group)
             continue
-        indent = line[: len(line) - len(line.lstrip())]
+        indent = group[0][: len(group[0]) - len(group[0].lstrip())]
         if indent:
             kept.append(f"{indent}pass")
     return "\n".join(kept)
@@ -67,16 +91,18 @@ def pip_arguments(notebook) -> list:
     pinned yet, and installing espnet from git here would test something other
     than what a reader gets. Quoting is undone, because `espnet[enh]` has to
     be quoted in the notebook and `pip install $(...)` would otherwise hand
-    pip a package name with quotation marks in it.
+    pip a package name with quotation marks in it. A trailing comment goes,
+    and a command split over lines is read as the one command it is.
     """
     wanted = []
     for cell in notebook.cells:
         if cell.cell_type != "code":
             continue
-        for line in cell.source.split("\n"):
-            match = PIP_LINE.match(line)
+        for joined, _ in logical_lines(cell.source):
+            match = PIP_LINE.match(joined)
             if match and "git+" not in match.group(1):
-                wanted.extend(shlex.split(match.group(1)))
+                # comments=True: a trailing `# why` is not three packages
+                wanted.extend(shlex.split(match.group(1), comments=True))
     return wanted
 
 

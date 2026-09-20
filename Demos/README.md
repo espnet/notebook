@@ -12,6 +12,30 @@ one of them broke rather than all of them — but it is earned: nothing goes in
 that table until it runs here. `unmaintained/` has no badge for the same
 reason.
 
+### What green means, and what it does not
+
+Green says: on a clean Ubuntu runner, on CPU, with Python 3.12, every cell of
+every demo ran to the end without raising, last Sunday.
+
+It does not say the output was right. Nothing here checks a transcript against
+a reference or listens to the audio; a model that quietly got worse would pass.
+
+Most of what a demo depends on is **not in this repository**, and the run is
+green or red according to those too:
+
+| | |
+|---|---|
+| the pinned espnet release, from PyPI | the pin is exact, so this does not move |
+| its dependency tree | **not pinned** — a new torch or numpy can break a demo with nothing changed here, and that is a real signal, not a false alarm |
+| the checkpoints, from the Hugging Face Hub | a model that is renamed, made private or deleted turns the run red; most are in the `espnet` organization, and `asr_streaming_demo` uses one copied there for that reason |
+| `transformers` and the LLM in `sds_demo` | outside ESPnet entirely |
+| the sample audio, from the espnet repository | moved or renamed, the run goes red |
+
+So a red badge is a question — which of those changed? — rather than an
+accusation against the notebook. And the Sunday cadence means up to a week can
+pass before a break is noticed. `workflow_dispatch` is there for when you want
+the answer now.
+
 | Notebook | What it does |
 |---|---|
 | [`asr_demo.ipynb`](asr_demo.ipynb) | Transcribe speech with OWSM-CTC, and let it work out the language |
