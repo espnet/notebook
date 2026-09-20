@@ -23,8 +23,28 @@ TASKS = ("asr", "s2t", "tts", "enh", "spk", "st", "codec", "slu", "diar")
 NAME = re.compile(rf"^({'|'.join(TASKS)})(_[a-z0-9]+)?_demo\.ipynb$")
 
 
+def dead_links(readme, root):
+    """Notebook links in a README that point at nothing.
+
+    Flattening Demos/ broke every link in the root README at once and
+    nothing said so: a markdown link to a moved file is a 404 on GitHub and
+    "Notebook not found" in Colab, neither of which reaches anybody here.
+    """
+    text = readme.read_text(encoding="utf-8")
+    dead = []
+    for target in re.findall(r"\]\(([^)]+\.ipynb)\)", text):
+        if target.startswith(("http://", "https://")):
+            continue
+        if not (root / target).is_file():
+            dead.append(f"{readme.name}: links to {target}, which is not there")
+    return dead
+
+
 def problems():
     found = []
+    root = DEMOS.parent
+    found += dead_links(root / "README.md", root)
+    found += dead_links(DEMOS / "README.md", DEMOS)
     for path in sorted(DEMOS.glob("*.ipynb")):
         if not NAME.match(path.name):
             found.append(
