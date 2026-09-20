@@ -91,6 +91,10 @@ cover, is in [`Demos/README.md`](../../Demos/README.md#what-green-means-and-what
 - Paths are relative instead of rooted at `/content`, and `device="cuda"` is
   now conditional, so the notebooks run outside Colab and on CPU runtimes.
 - `gdown --id X` became `gdown X`: the flag was removed in gdown 5.
+- `pysndfile` is gone from the translation notebook. Nothing imported it and
+  nothing declared it — it is a build from source that wants libsndfile's
+  headers, and it was the only thing that stopped that notebook from
+  installing on a clean runner.
 - Outputs and widget state are cleared. One TensorBoard cell was carrying 9 MB
   of it.
 
