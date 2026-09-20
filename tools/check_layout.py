@@ -15,7 +15,12 @@ DEMOS = pathlib.Path(__file__).parents[1] / "Demos"
 UNMAINTAINED = DEMOS / "unmaintained"
 # the task names espnet2/tasks/ and espnet.load(task=...) use
 TASKS = ("asr", "s2t", "tts", "enh", "spk", "st", "codec", "slu", "diar")
-NAME = re.compile(rf"^({'|'.join(TASKS)})_demo\.ipynb$")
+# <task>_demo.ipynb, or <task>_<variant>_demo.ipynb when a task has a second
+# angle worth its own page - asr_streaming_demo.ipynb against asr_demo.ipynb.
+# The variant is not a licence to multiply: every demo has to be listed in
+# Demos/README.md with a line saying what it does, which is checked below, so
+# a second one cannot appear without someone saying how it differs.
+NAME = re.compile(rf"^({'|'.join(TASKS)})(_[a-z0-9]+)?_demo\.ipynb$")
 
 
 def problems():
@@ -32,6 +37,14 @@ def problems():
             found.append(
                 f"{path.relative_to(DEMOS)}: Demos/ is flat - a demo goes here, "
                 f"an old one in unmaintained/, and everything else in ../Courses/"
+            )
+    index = (DEMOS / "README.md").read_text(encoding="utf-8")
+    for path in sorted(DEMOS.glob("*.ipynb")):
+        if path.name not in index:
+            found.append(
+                f"{path.name}: not listed in Demos/README.md. A demo nobody "
+                f"can tell apart from the others is how this directory filled "
+                f"up before; say in one line what this one does"
             )
     for path in sorted(DEMOS.glob("*.ipynb")):
         text = path.read_text(encoding="utf-8")

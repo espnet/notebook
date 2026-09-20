@@ -6,11 +6,18 @@ result.
 
 | Notebook | What it does |
 |---|---|
+| [`asr_demo.ipynb`](asr_demo.ipynb) | Transcribe speech with OWSM-CTC, and let it work out the language |
+| [`asr_streaming_demo.ipynb`](asr_streaming_demo.ipynb) | Watch the words appear while the audio is still arriving |
+| [`st_demo.ipynb`](st_demo.ipynb) | Translate English speech into German, French and Chinese — the same model |
 | [`tts_demo.ipynb`](tts_demo.ipynb) | Type a sentence, hear it spoken — one English voice, then 128 of them |
+| [`enh_demo.ipynb`](enh_demo.ipynb) | Pull speech out of noise, and measure how much it helped |
+| [`spk_demo.ipynb`](spk_demo.ipynb) | Turn a voice into a vector, and score two recordings against each other |
+| [`codec_demo.ipynb`](codec_demo.ipynb) | Compress a waveform to a few integers a frame, rebuild it, count the bits |
 
 ## The naming rule
 
-`<task>_demo.ipynb`, flat in this directory, where `<task>` is the ESPnet task
+`<task>_demo.ipynb` or `<task>_<variant>_demo.ipynb`, flat in this directory,
+where `<task>` is the ESPnet task
 name the rest of the toolkit already uses:
 
 | `<task>` | |
@@ -28,10 +35,12 @@ model cards use, so a reader who knows one knows the others. Flat, because a
 directory per task held one or two files and made you click twice to find out
 there was nothing there.
 
-One notebook per task, not one per idea: a second `asr_something_demo.ipynb`
-is how this directory filled up with notebooks nobody could tell apart. If a
-task needs more than one page, the second one belongs in `../Courses/` with the
-material that explains it.
+A task may have a second angle worth its own page, and then the name carries
+it: `asr_streaming_demo.ipynb` beside `asr_demo.ipynb`. That is not a licence
+to multiply — this directory filled up once with notebooks nobody could tell
+apart. Every demo has to appear in the table above with a line saying what it
+does, and `../tools/check_layout.py` fails if one does not, so a second page
+cannot arrive without someone saying how it differs from the first.
 
 ## What a demo owes the reader
 
