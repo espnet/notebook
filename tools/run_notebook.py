@@ -93,6 +93,10 @@ def pip_arguments(notebook) -> list:
     be quoted in the notebook and `pip install $(...)` would otherwise hand
     pip a package name with quotation marks in it. A trailing comment goes,
     and a command split over lines is read as the one command it is.
+
+    tools/README.md states all of this as a table, because a notebook author
+    writing an install cell is writing against it, and tests/ holds each row
+    as a case.
     """
     wanted = []
     for cell in notebook.cells:

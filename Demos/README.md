@@ -83,7 +83,10 @@ cannot arrive without someone saying how it differs from the first.
   their afternoon and the project their credibility.
 - **It pins a release.** `espnet==<version>`, never `git+https://...`. The
   notebook should do the same thing in April that it does today, and a break on
-  `master` the night before someone opens it is not their problem.
+  `master` the night before someone opens it is not their problem. The install
+  cell is also what CI installs — it is read rather than duplicated in the
+  workflow, so what that cell may say is an interface:
+  [what `--print-install` supports](../tools/README.md#what-ci-installs-the-install-cell-is-the-contract).
 - **It ends by pointing onwards** — the one-line terminal command, the Space if
   there is one, the course notebook for the long version.
 
