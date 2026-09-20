@@ -1,30 +1,36 @@
 # ESPnet Notebooks
 
+[![Checked weekly](https://github.com/espnet/notebook/actions/workflows/run_notebooks.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/run_notebooks.yml)
+
+Notebooks for [ESPnet](https://github.com/espnet/espnet): short demos of what
+the toolkit does, and the material from the CMU speech courses.
+
+The badge is the demos below, executed cell by cell every Sunday against the
+release they pin. Nothing goes in that list until it runs there —
+[what green means, and what it does not](Demos/README.md#what-green-means-and-what-it-does-not).
+
 ## Demos
 
-### ASR (Speech recognition)
+One per task, flat in [`Demos/`](Demos), each short enough to read in a sitting.
 
-- [`asr_realtime_demo.ipynb`](Demos/ASR/asr_realtime_demo.ipynb): ASR realtime inference with various pre-trained models.
-- [`asr_transfer_learning_demo.ipynb`](Demos/ASR/asr_transfer_learning_demo.ipynb): Demo on how to use pre-trained ASR models for fine-tuning.
-- [`streaming_asr_demo.ipynb`](Demos/ASR/streaming_asr_demo.ipynb): Streaming ASR realtime inference with pre-trained models.
+| Notebook | What it does |
+|---|---|
+| [`asr_demo.ipynb`](Demos/asr_demo.ipynb) | Transcribe speech with OWSM-CTC, and let it work out the language |
+| [`asr_streaming_demo.ipynb`](Demos/asr_streaming_demo.ipynb) | Watch the words appear while the audio is still arriving |
+| [`st_demo.ipynb`](Demos/st_demo.ipynb) | Translate English speech into German, French and Chinese — the same model |
+| [`tts_demo.ipynb`](Demos/tts_demo.ipynb) | Type a sentence, hear it spoken — one English voice, then 128 of them |
+| [`enh_demo.ipynb`](Demos/enh_demo.ipynb) | Pull speech out of noise, and measure how much it helped |
+| [`spk_demo.ipynb`](Demos/spk_demo.ipynb) | Turn a voice into a vector, and score two recordings against each other |
+| [`codec_demo.ipynb`](Demos/codec_demo.ipynb) | Compress a waveform to a few integers a frame, rebuild it, count the bits |
+| [`sds_demo.ipynb`](Demos/sds_demo.ipynb) | Speech in, speech out, with a language model thinking in between |
 
-### SE (Speech enhancement/separation)
+[`Demos/unmaintained/`](Demos/unmaintained) holds what was here before — the
+oldest from 2021, most of it no longer running, kept because some of it is
+still the only written record of how a thing was done. **It carries no badge
+and nothing checks it.**
 
-- [`se_demo.ipynb`](Demos/SE/se_demo.ipynb): Speech enhancement/separation inference with various pre-trained models.
-- [`se_demo_for_waspaa_2021.ipynb`](Demos/SE/se_demo_for_waspaa_2021.ipynb): WASPAA2021 version of ESPnet-SE demo.
-
-### SLU (Spoken language understanding)
-
-- [`2pass_slu_demo.ipynb`](Demos/SLU/2pass_slu_demo.ipynb): Two pass spoken language understanding pre-trained model examples.
-
-### TTS (Text-to-speech)
-
-- [`tts_realtime_demo.ipynb`](Demos/TTS/tts_realtime_demo.ipynb): TTS realtime inference with various pre-trained models.
-
-### Other utilities
-
-- [`onnx_conversion_demo.ipynb`](Demos/Others/onnx_conversion_demo.ipynb): How to convert ESPnet models into ONNX format.
-
+[`Demos/README.md`](Demos/README.md) has the naming rule and what a demo owes
+the reader.
 
 ## Courses
 

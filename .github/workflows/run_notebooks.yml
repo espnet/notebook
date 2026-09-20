@@ -2,11 +2,17 @@
 # right, and the failure only appears when somebody runs them in class. So run
 # them here on a schedule instead, against the release the notebooks pin.
 #
-# One notebook runs. speaker_verification is the one that fits a free runner:
-# no GPU, no package that has to be built, and it finishes well inside the
-# timeout. The others are each blocked on something of their own - see this
-# directory's README - and adding one means finding that out first, not
-# putting it in the matrix and hoping.
+# Every notebook in Demos/ runs, and one of the course notebooks. The demos
+# are written to fit a free runner: no GPU, nothing built from source, each a
+# handful of cells. The other four course notebooks are each blocked on
+# something of their own - see Courses/CMUSpeechTechnology26S/README.md - and
+# adding one means finding that out first, not putting it in the matrix and
+# hoping.
+#
+# What to install is asked of the notebook rather than written here twice:
+# `run_notebook.py --print-install` reads its own pip lines. A demo that
+# starts needing another extra says so in the cell a reader runs, and this
+# installs it without being told again.
 
 name: run notebooks
 
@@ -17,7 +23,9 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
+      - "Demos/**"
       - "Courses/CMUSpeechTechnology26S/**"
+      - "tools/**"
       - ".github/workflows/run_notebooks.yml"
 
 permissions:
@@ -31,7 +39,15 @@ jobs:
       fail-fast: false
       matrix:
         notebook:
-          - speaker_verification.ipynb
+          - Demos/asr_demo.ipynb
+          - Demos/asr_streaming_demo.ipynb
+          - Demos/st_demo.ipynb
+          - Demos/tts_demo.ipynb
+          - Demos/enh_demo.ipynb
+          - Demos/spk_demo.ipynb
+          - Demos/codec_demo.ipynb
+          - Demos/sds_demo.ipynb
+          - Courses/CMUSpeechTechnology26S/speaker_verification.ipynb
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -45,14 +61,14 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
-          # the runner skips the notebooks' install cells, so install what
-          # they would have installed, pinned to the same release they pin -
-          # testing a different espnet from the one Colab gets would make a
-          # pass here mean nothing
-          python -m pip install "espnet[enh]==202610.post1"
+          # the harness itself, before it can be asked anything
           python -m pip install nbclient nbformat ipykernel \
             librosa scikit-learn matplotlib tqdm soundfile editdistance
+          # then what this notebook's own pip lines ask for. The runner skips
+          # those cells, so installing a different espnet from the one a
+          # reader gets would make a pass here mean nothing.
+          python -m pip install $(python tools/run_notebook.py \
+            "${{ matrix.notebook }}" --print-install)
 
       - name: Run ${{ matrix.notebook }}
-        working-directory: Courses/CMUSpeechTechnology26S
-        run: python ../../tools/run_notebook.py "${{ matrix.notebook }}" --timeout 4800
+        run: python tools/run_notebook.py "${{ matrix.notebook }}" --timeout 4800

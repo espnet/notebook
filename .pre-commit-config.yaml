@@ -26,3 +26,16 @@ repos:
         language: system
         pass_filenames: false
         files: ^Demos/
+
+  # tools/run_notebook.py --print-install decides what CI installs, so its
+  # parsing is the one place a wrong answer becomes a green run of the wrong
+  # thing. Held to cases rather than to a reading of the regex.
+  - repo: local
+    hooks:
+      - id: tools-tests
+        name: tools tests
+        entry: python -m pytest tests -q
+        language: python
+        additional_dependencies: [pytest]
+        pass_filenames: false
+        files: ^(tools|tests)/
