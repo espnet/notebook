@@ -8,10 +8,11 @@ ESPnet rather than at anyone's fork, and each one is run before it is changed.
 
 They are meant to be opened in Colab, and they run on CPU.
 
-The course's two fine-tuning notebooks are not here yet: they are written
-against an ESPnet3 data API that has since changed, and both stop at
-`recipe_dir must be set when data_src is None`. They come back when they are
-updated to the current one.
+The two fine-tuning notebooks are here now. They were written against an
+ESPnet3 data API that has since changed: a dataset is no longer a class the
+notebook defines and hands over, but a module ESPnet3 imports. Both were
+rewritten to the current shape, which is also how a recipe in `egs3/` is laid
+out - see [What was changed](#what-was-changed).
 
 | Notebook | | What it does |
 |---|---|---|
@@ -20,6 +21,8 @@ updated to the current one.
 | [`text_to_speech.ipynb`](text_to_speech.ipynb) | [![text_to_speech](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml) | Single-speaker and multi-speaker synthesis, and VERSA scores |
 | [`neural_codec.ipynb`](neural_codec.ipynb) | [![neural_codec](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml) | Three pretrained neural codecs and the bitrate trade between them |
 | [`speech_translation.ipynb`](speech_translation.ipynb) | [![speech_translation](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml) | Offline and simultaneous speech translation with ESPnet-ST-v2 |
+| [`owsm_finetuning.ipynb`](owsm_finetuning.ipynb) | [![owsm_finetuning](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning.yml) | Fine-tune OWSM on one language of FLEURS with the ESPnet3 trainer |
+| [`owsm_finetuning_ctc.ipynb`](owsm_finetuning_ctc.ipynb) | [![owsm_finetuning_ctc](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning_ctc.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/owsm_finetuning_ctc.yml) | Fine-tune on a small spoken-digit corpus, then CTC against beam search |
 
 All five run every Sunday, each on its own workflow, cell by cell, against the
 release the notebook pins. A badge is that notebook and nothing else.
@@ -115,6 +118,28 @@ cover, is in [`Demos/README.md`](../../Demos/README.md#what-green-means-and-what
   installing on a clean runner.
 - Outputs and widget state are cleared. One TensorBoard cell was carrying 9 MB
   of it.
+- **The two fine-tuning notebooks follow ESPnet3's current data API.** They
+  each defined a `torch.utils.data.Dataset` in the notebook and named it in
+  the config as `_target_: __main__.FLEURSDataset`. That is gone:
+  `DataOrganizer` resolves every entry through `load_dataset_module()`, which
+  imports `<recipe_dir>/dataset/__init__.py` and expects a class called
+  `Dataset`, with the config passing its arguments as `data_src_args`. Both
+  notebooks now write that module with `%%writefile` and point `recipe_dir` at
+  it, which is the layout a recipe in `egs3/` uses.
+- The CTC notebook loaded the model twice, once as `Speech2Text` and once as
+  `Speech2TextCTCGreedySearch`, to compare beam search against CTC. One object
+  does both now: `s2t.best_path()` is the CTC head of the model already
+  loaded, so the comparison cannot accidentally be between two sets of
+  weights.
+- Neither notebook names a checkpoint by step number any more. `step300.ckpt`
+  is only right while nothing above it changes; both now load the last
+  checkpoint the trainer wrote.
+- **The weekly run of the two fine-tuning notebooks is a smaller one.** A free
+  runner cannot fine-tune at full size, so their workflows set a few
+  environment variables - fewer clips, two steps instead of three hundred -
+  and each workflow says which. Their badge means the notebook installs, finds
+  its data and still agrees with ESPnet3's API; it does not mean the numbers
+  printed in it were reproduced. Open one and you get the full run.
 
 ## Credit
 

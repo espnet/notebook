@@ -13,6 +13,15 @@ on:
       notebook:
         required: true
         type: string
+      # What the notebook reads from the environment to run smaller here than
+      # it does for a reader. Only the fine-tuning notebooks use it: a free
+      # runner cannot fine-tune at full size, and a badge that says "this
+      # notebook runs" is still worth having for the installs, the data and
+      # the API. What each one shrinks is said in its own workflow.
+      env_json:
+        required: false
+        type: string
+        default: "{}"
 
 permissions:
   contents: read
@@ -21,6 +30,9 @@ jobs:
   run:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    # a map rather than a shell line, so nothing here is interpolated into a
+    # command
+    env: ${{ fromJSON(inputs.env_json) }}
     steps:
       # See the espnet repository's CI: the default persists GITHUB_TOKEN in
       # .git/config, and nothing here needs it.
