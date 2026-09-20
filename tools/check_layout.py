@@ -39,6 +39,9 @@ def problems():
                 f"an old one in unmaintained/, and everything else in ../Courses/"
             )
     index = (DEMOS / "README.md").read_text(encoding="utf-8")
+    workflow = (
+        DEMOS.parent / ".github" / "workflows" / "run_notebooks.yml"
+    ).read_text(encoding="utf-8")
     for path in sorted(DEMOS.glob("*.ipynb")):
         if path.name not in index:
             found.append(
@@ -58,6 +61,19 @@ def problems():
         # letter n, so espnet[enh] failed a check the notebook passed.
         if not re.search(r"espnet(\[[a-z, ]+\])?==\d{6}", text):
             found.append(f"{path.name}: does not pin an espnet release")
+        # the badge is the claim that this notebook is run every week, and it
+        # is only true while the notebook is in the workflow's matrix
+        if "run_notebooks.yml/badge.svg" not in text:
+            found.append(
+                f"{path.name}: carries no weekly-check badge. It is what tells "
+                f"a reader in Colab that this page is run rather than hoped for"
+            )
+        if path.name not in workflow:
+            found.append(
+                f"{path.name}: not in .github/workflows/run_notebooks.yml. A "
+                f"demo that nothing runs is the thing this directory is for "
+                f"not having"
+            )
     return found
 
 

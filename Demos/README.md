@@ -1,8 +1,16 @@
 # Demos
 
+[![Checked weekly](https://github.com/espnet/notebook/actions/workflows/run_notebooks.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/run_notebooks.yml)
+
 One notebook per task, each short enough to read in a sitting and run before
 you lose interest. Open one in Colab, run it top to bottom, hear or see the
 result.
+
+The badge is every notebook in the table below, executed cell by cell every
+Sunday against the release they pin. It is one badge for the set, so red means
+one of them broke rather than all of them — but it is earned: nothing goes in
+that table until it runs here. `unmaintained/` has no badge for the same
+reason.
 
 | Notebook | What it does |
 |---|---|
@@ -44,9 +52,11 @@ cannot arrive without someone saying how it differs from the first.
 
 ## What a demo owes the reader
 
-- **It runs.** Every notebook here was executed end to end, on the release it
-  pins, before it was committed. A demo that does not run is worse than no demo:
-  it costs the reader their afternoon and the project their credibility.
+- **It runs, and goes on running.** Every notebook here was executed end to end,
+  on the release it pins, before it was committed — and again every Sunday by
+  `.github/workflows/run_notebooks.yml`, which is what the badge at the top
+  reports. A demo that does not run is worse than no demo: it costs the reader
+  their afternoon and the project their credibility.
 - **It pins a release.** `espnet==<version>`, never `git+https://...`. The
   notebook should do the same thing in April that it does today, and a break on
   `master` the night before someone opens it is not their problem.
