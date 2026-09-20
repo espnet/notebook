@@ -36,13 +36,31 @@ something the notebook can fetch on its own:
   built on WSJ0. The page's sample is single-channel where the corpus has six;
   the enhancement in the notebook is single-channel either way, so the
   demonstration is unchanged.
-- **wsj0-2mix.** The separation model is trained on mixtures built from WSJ0,
-  which cannot be published, and the course's mixture came from Drive. The
-  notebook now builds one the same way at runtime — two ESPnet test recordings
-  of different speakers, summed at equal level and normalised. It is a
-  different mixture from the course's, and an easier one: two clean utterances
-  with no shared channel. The separation and the ASR scoring after it still
-  show what they were there to show.
+- **wsj0-2mix → Libri2Mix.** The separation section used a mixture from
+  wsj0-2mix, which is built on WSJ0 and cannot be published, fetched from
+  Drive. It now separates a **Libri2Mix** mixture instead, and the model
+  changed with the data:
+  [`espnet/anogkongda_librimix_enh_train_raw_valid.si_snr.ave`](https://huggingface.co/espnet/anogkongda_librimix_enh_train_raw_valid.si_snr.ave),
+  a Conv-TasNet trained on Libri2Mix. Libri2Mix is built on LibriSpeech, which
+  is CC BY 4.0, so the two sources could be published beside the model; the
+  notebook builds the mixture from them the way LibriMix does — the gains the
+  official metadata gives for that pair, resampled to 8 kHz, truncated to the
+  shorter source. It is the real test mixture
+  `7729-102255-0031_2094-142345-0028`, not an improvisation.
+
+  Having the sources means the separation is **scored** rather than only
+  listened to: SI-SNR 3.24 → 16.21 dB for one speaker and −3.28 → 12.88 dB for
+  the other. The ASR that follows moved to a LibriSpeech model for the same
+  reason, and it reads the separated streams almost perfectly while the
+  mixture comes out as nonsense, which is the point of the section.
+
+  The noisy half of Libri2Mix adds WHAM! noise, CC BY-NC 4.0, and is not used.
+
+  That model did not load at all before this: a checkpoint from before May
+  2023 cannot be built by current espnet, because `TCNSeparator` defaults to a
+  layout its weights predate. Its config now records the layout it was trained
+  with, and so do four others in the organisation that were unloadable for the
+  same reason.
 
 ## Running them outside Colab
 
