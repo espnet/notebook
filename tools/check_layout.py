@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Hold Demos/ to the rule its README states.
+"""Hold Demos/ and the maintained course to the rules their READMEs state.
 
 A convention written only in prose is one nobody notices breaking. This is
 the same rule, in a form that fails.
@@ -13,6 +13,8 @@ import sys
 
 DEMOS = pathlib.Path(__file__).parents[1] / "Demos"
 UNMAINTAINED = DEMOS / "unmaintained"
+# the one course that is kept running; the rest of Courses/ is a record
+COURSE = DEMOS.parent / "Courses" / "CMUSpeechTechnology26S"
 # the task names espnet2/tasks/ and espnet.load(task=...) use
 TASKS = ("asr", "s2t", "tts", "enh", "spk", "st", "codec", "slu", "diar", "sds")
 # <task>_demo.ipynb, or <task>_<variant>_demo.ipynb when a task has a second
@@ -40,6 +42,53 @@ def dead_links(readme, root):
     return dead
 
 
+def badged_and_run(path, readmes):
+    """One notebook's claim to be run every week, checked everywhere it is made.
+
+    The badge is that claim, and it is made in three places: in the notebook,
+    so a reader in Colab sees it; and in each README that lists the notebook.
+    All three are the same workflow, and it has to exist and name this
+    notebook, or every one of them is a lie. The course table said four of
+    five ran for a day after all five did, which is the harmless direction of
+    the same mistake.
+    """
+    root = DEMOS.parent
+    workflows = root / ".github" / "workflows"
+    found = []
+    workflow = workflows / f"{path.stem}.yml"
+    if not workflow.is_file():
+        found.append(
+            f"{path.name}: has no .github/workflows/{workflow.name}. A notebook "
+            f"that nothing runs is the thing this repository is for not having, "
+            f"and the badge would be a lie"
+        )
+    elif f"notebook: {path.relative_to(root)}" not in workflow.read_text(
+        encoding="utf-8"
+    ):
+        # the input it passes, not a mention of the path: the file also
+        # names its notebook in a comment and in `paths:`, and either
+        # would satisfy a looser check while the workflow ran another one
+        found.append(
+            f"{workflow.name}: does not name {path.name}. The badge on it "
+            f"is what the READMEs show beside that notebook"
+        )
+    badge = f"workflows/{path.stem}.yml/badge.svg"
+    if badge not in path.read_text(encoding="utf-8"):
+        found.append(
+            f"{path.name}: carries no badge for its own workflow. It is "
+            f"what tells a reader in Colab that this page is run rather "
+            f"than hoped for"
+        )
+    for readme in readmes:
+        if badge not in readme.read_text(encoding="utf-8"):
+            found.append(
+                f"{readme.relative_to(root)}: lists {path.name} without its "
+                f"badge, or not at all. A table that a reader cannot check is "
+                f"how this one came to claim four of five when all five ran"
+            )
+    return found
+
+
 def problems():
     found = []
     root = DEMOS.parent
@@ -59,7 +108,6 @@ def problems():
                 f"an old one in unmaintained/, and everything else in ../Courses/"
             )
     index = (DEMOS / "README.md").read_text(encoding="utf-8")
-    workflows = DEMOS.parent / ".github" / "workflows"
     for path in sorted(DEMOS.glob("*.ipynb")):
         if path.name not in index:
             found.append(
@@ -79,32 +127,17 @@ def problems():
         # letter n, so espnet[enh] failed a check the notebook passed.
         if not re.search(r"espnet(\[[a-z, ]+\])?==\d{6}", text):
             found.append(f"{path.name}: does not pin an espnet release")
-        # The badge is the claim that this notebook is run every week. One
-        # workflow per notebook, because a badge is per workflow - so the
-        # claim is true exactly when that workflow exists and names it.
-        workflow = workflows / f"{path.stem}.yml"
-        if not workflow.is_file():
+        found += badged_and_run(path, [DEMOS / "README.md", root / "README.md"])
+    for path in sorted(COURSE.glob("*.ipynb")):
+        found += badged_and_run(path, [COURSE / "README.md", root / "README.md"])
+        text = path.read_text(encoding="utf-8")
+        if not re.search(r"espnet(\[[a-z, ]+\])?==\d{6}", text):
             found.append(
-                f"{path.name}: has no .github/workflows/{workflow.name}. A demo "
-                f"that nothing runs is the thing this directory is for not "
-                f"having, and the badge would be a lie"
+                f"{path.name}: does not pin an espnet release. A course "
+                f"notebook is worth having because it does the same thing in "
+                f"April that it does today"
             )
-        elif f"notebook: {path.relative_to(DEMOS.parent)}" not in workflow.read_text(
-            encoding="utf-8"
-        ):
-            # the input it passes, not a mention of the path: the file also
-            # names its notebook in a comment and in `paths:`, and either
-            # would satisfy a looser check while the workflow ran another one
-            found.append(
-                f"{workflow.name}: does not name {path.name}. The badge on it "
-                f"is what the README shows beside that notebook"
-            )
-        if f"workflows/{path.stem}.yml/badge.svg" not in text:
-            found.append(
-                f"{path.name}: carries no badge for its own workflow. It is "
-                f"what tells a reader in Colab that this page is run rather "
-                f"than hoped for"
-            )
+    found += dead_links(COURSE / "README.md", COURSE)
     return found
 
 
@@ -113,9 +146,10 @@ def main():
     for problem in found:
         print(problem, file=sys.stderr)
     if found:
-        sys.exit(f"\n{len(found)} problem(s) in Demos/")
+        sys.exit(f"\n{len(found)} problem(s)")
     print(f"Demos/ ok: {len(list(DEMOS.glob('*.ipynb')))} demo(s), "
           f"{len(list(UNMAINTAINED.glob('*.ipynb')))} unmaintained")
+    print(f"{COURSE.name} ok: {len(list(COURSE.glob('*.ipynb')))} notebook(s)")
 
 
 if __name__ == "__main__":

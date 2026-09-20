@@ -16,54 +16,81 @@ updated to the current one.
 | Notebook | | What it does |
 |---|---|---|
 | [`speaker_verification.ipynb`](speaker_verification.ipynb) | [![speaker_verification](https://github.com/espnet/notebook/actions/workflows/speaker_verification.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speaker_verification.yml) | Speaker embeddings with ESPnet-SPK, verification, and a simple diarization |
+| [`speech_enhancement.ipynb`](speech_enhancement.ipynb) | [![speech_enhancement](https://github.com/espnet/notebook/actions/workflows/speech_enhancement.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_enhancement.yml) | Enhancement and separation, scored with VERSA and a pretrained ASR model |
 | [`text_to_speech.ipynb`](text_to_speech.ipynb) | [![text_to_speech](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml) | Single-speaker and multi-speaker synthesis, and VERSA scores |
-| [`speech_enhancement.ipynb`](speech_enhancement.ipynb) | needs Google Drive | Enhancement and separation, scored with VERSA and a pretrained ASR model |
-| [`neural_codec.ipynb`](neural_codec.ipynb) | VERSA's scorer | Three pretrained neural codecs and the bitrate trade between them |
-| [`speech_translation.ipynb`](speech_translation.ipynb) | not tried | Offline and simultaneous speech translation with ESPnet-ST-v2 |
+| [`neural_codec.ipynb`](neural_codec.ipynb) | [![neural_codec](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml) | Three pretrained neural codecs and the bitrate trade between them |
+| [`speech_translation.ipynb`](speech_translation.ipynb) | [![speech_translation](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml) | Offline and simultaneous speech translation with ESPnet-ST-v2 |
 
-Two of the five run every Sunday. The other three are stopped by something
-outside the notebook, and it is worth naming which rather than calling it
-maintenance:
+All five run every Sunday, each on its own workflow, cell by cell, against the
+release the notebook pins. A badge is that notebook and nothing else.
 
-- **`speech_enhancement`** fetches its noisy sample from Google Drive with
-  `gdown`. Everything else about it installs and runs; the audio does not
-  arrive. A sample that lived in a repository would fix this.
-- **`neural_codec`** gets as far as VERSA's scorer, which exits without
-  writing its output file — the metrics it runs want more than
-  `pip install versa` provides.
-- **`speech_translation`** has not been tried since the pins came out. It
-  clones SimulEval and ParallelWaveGAN and installs `pysndfile`, which is the
-  one that usually refuses to build.
+## Samples the course used and this repository cannot carry
+
+Two of the recordings in `speech_enhancement` came from Google Drive copies of
+licensed corpora. Neither could be committed here, so each was replaced by
+something the notebook can fetch on its own:
+
+- **CHiME-4.** The real noisy sample is now `ped.wav` from the challenge's own
+  [data page](https://www.chimechallenge.org/challenges/chime4/data), which
+  publishes a few recordings to listen to. The corpus itself is LDC2017S24 and
+  built on WSJ0. The page's sample is single-channel where the corpus has six;
+  the enhancement in the notebook is single-channel either way, so the
+  demonstration is unchanged.
+- **wsj0-2mix → Libri2Mix.** The separation section used a mixture from
+  wsj0-2mix, which is built on WSJ0 and cannot be published, fetched from
+  Drive. It now separates a **Libri2Mix** mixture instead, and the model
+  changed with the data:
+  [`espnet/anogkongda_librimix_enh_train_raw_valid.si_snr.ave`](https://huggingface.co/espnet/anogkongda_librimix_enh_train_raw_valid.si_snr.ave),
+  a Conv-TasNet trained on Libri2Mix. Libri2Mix is built on LibriSpeech, which
+  is CC BY 4.0, so the two sources could be published beside the model; the
+  notebook builds the mixture from them the way LibriMix does — the gains the
+  official metadata gives for that pair, resampled to 8 kHz, truncated to the
+  shorter source. It is the real test mixture
+  `7729-102255-0031_2094-142345-0028`, not an improvisation.
+
+  Having the sources means the separation is **scored** rather than only
+  listened to: SI-SNR 3.24 → 16.21 dB for one speaker and −3.28 → 12.88 dB for
+  the other. The ASR that follows moved to a LibriSpeech model for the same
+  reason, and it reads the separated streams almost perfectly while the
+  mixture comes out as nonsense, which is the point of the section.
+
+  The noisy half of Libri2Mix adds WHAM! noise, CC BY-NC 4.0, and is not used.
+
+  That model did not load at all before this: a checkpoint from before May
+  2023 cannot be built by current espnet, because `TCNSeparator` defaults to a
+  layout its weights predate. Its config now records the layout it was trained
+  with, and so do four others in the organisation that were unloadable for the
+  same reason.
 
 ## Running them outside Colab
 
-`../../tools/run_notebook.py` executes one of them here: it skips the install cells, since
-the packages are already present, and replaces `wget` and `tar` with their
-Python equivalents.
+`../../tools/run_notebook.py` executes one of them here: it skips the install
+cells, since the packages are already present, and replaces `wget`, `tar` and
+`unzip` with their Python equivalents.
 
 ```sh
-pip install "espnet==202610.post1" nbclient nbformat ipykernel librosa \
-    scikit-learn matplotlib
+python ../../tools/run_notebook.py speaker_verification.ipynb --print-install
+```
+
+prints what that notebook installs, so an environment for it is
+
+```sh
+pip install $(python ../../tools/run_notebook.py speaker_verification.ipynb --print-install) \
+    nbclient nbformat ipykernel
 python ../../tools/run_notebook.py speaker_verification.ipynb
 ```
 
-The notebooks pin that release rather than installing espnet from git. A course
+The notebooks pin a release rather than installing espnet from git. A course
 notebook is worth having because it does the same thing in April that it does
 today, and installing from `master` gives neither that nor a fast install: it
 builds from source, and a break on `master` the night before class is a break
 in class. Each release, the pin moves and the notebooks are run again.
 
-`.github/workflows/run_notebooks.yml` runs `speaker_verification.ipynb` every
-Sunday, so a notebook that stops working is noticed here rather than in class.
-
-**One of the five, not all five.** It is the one that fits a free runner: no
-GPU, nothing that has to be built, and it finishes inside the timeout. The
-others are each blocked on something of their own — `text_to_speech` builds a
-vocoder from source, `neural_codec` and `speech_translation` pin an old numpy
-and TensorFlow against the rest of the environment, `speech_enhancement` runs
-VERSA over several models. Until one of those is sorted out, the other four are
-checked by running them by hand, which is a worse guarantee and should be said
-plainly rather than implied.
+Each notebook has its own workflow in `.github/workflows/`, all of them calling
+`_run_notebook.yml`, and each runs every Sunday. That is why the badge in the
+table above can be read per notebook: a red one names the notebook that broke,
+not the batch it was in. What green means, and the three things it does not
+cover, is in [`Demos/README.md`](../../Demos/README.md#what-green-means-and-what-it-does-not).
 
 ## What was changed
 
@@ -82,6 +109,10 @@ plainly rather than implied.
 - Paths are relative instead of rooted at `/content`, and `device="cuda"` is
   now conditional, so the notebooks run outside Colab and on CPU runtimes.
 - `gdown --id X` became `gdown X`: the flag was removed in gdown 5.
+- `pysndfile` is gone from the translation notebook. Nothing imported it and
+  nothing declared it — it is a build from source that wants libsndfile's
+  headers, and it was the only thing that stopped that notebook from
+  installing on a clean runner.
 - Outputs and widget state are cleared. One TensorBoard cell was carrying 9 MB
   of it.
 

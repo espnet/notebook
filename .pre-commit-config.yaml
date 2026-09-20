@@ -16,16 +16,20 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=2048"]  # notebooks carry audio and images in outputs
 
-  # The rule Demos/README.md states, in a form that fails. A convention
-  # written only in prose is one nobody notices breaking.
+  # The rules the READMEs state, in a form that fails. A convention written
+  # only in prose is one nobody notices breaking. The trigger has to cover
+  # every file the check reads, not only the notebooks: the tables, the
+  # badges and the workflows are what it checks against each other, and a
+  # README edited on its own is exactly how the course table came to claim
+  # four of five when all five ran.
   - repo: local
     hooks:
-      - id: demos-layout
-        name: Demos/ layout and pins
+      - id: notebook-layout
+        name: layout, pins and badges
         entry: python tools/check_layout.py
         language: system
         pass_filenames: false
-        files: ^Demos/
+        files: ^(Demos/|Courses/CMUSpeechTechnology26S/|README\.md$|\.github/workflows/)
 
   # tools/run_notebook.py --print-install decides what CI installs, so its
   # parsing is the one place a wrong answer becomes a green run of the wrong
