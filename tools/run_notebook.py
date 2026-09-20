@@ -16,6 +16,7 @@ import argparse
 import json
 import pathlib
 import re
+import shlex
 import sys
 import tempfile
 
@@ -26,15 +27,129 @@ INSTALL_LINE = re.compile(
 )
 
 
+def logical_lines(source: str):
+    """The cell's lines, with backslash continuations joined.
+
+    Yields (joined text, the physical lines it came from). A shell line split
+    over three lines is one command, and treating it as three is how the
+    second and third end up in the cell as stray Python.
+    """
+    physical = source.split("\n")
+    index = 0
+    while index < len(physical):
+        group = [physical[index]]
+        while group[-1].rstrip().endswith("\\") and index + 1 < len(physical):
+            index += 1
+            group.append(physical[index])
+        joined = " ".join(line.rstrip().rstrip("\\").strip() for line in group)
+        if len(group) == 1:
+            joined = group[0]
+        yield joined, group
+        index += 1
+
+
 def drop_installs(source: str) -> str:
     """Remove the install lines, keeping whatever else the cell does.
 
     A cell is often both: the model chooser ends with `!pip install s3prl`,
     and skipping the whole cell would lose the variable it sets.
+
+    An indented install becomes `pass` rather than disappearing. The model
+    chooser installs S3PRL only for the front-ends that need it, and deleting
+    the body of an `if` leaves the `if` with nothing under it.
+
+    A continued command goes entirely, all of its lines: dropping the first
+    and keeping the rest leaves the arguments behind as Python.
     """
-    return "\n".join(
-        line for line in source.split("\n") if not INSTALL_LINE.match(line)
-    )
+    kept = []
+    for joined, group in logical_lines(source):
+        if not INSTALL_LINE.match(joined):
+            kept.extend(group)
+            continue
+        indent = group[0][: len(group[0]) - len(group[0].lstrip())]
+        if indent:
+            kept.append(f"{indent}pass")
+    return "\n".join(kept)
+
+
+# No leading whitespace: an indented install is inside an `if`, and what it
+# asks for depends on a choice made when the notebook runs, not on the
+# notebook. The model chooser installs S3PRL only for the WavLM front-ends.
+PIP_LINE = re.compile(r"^[!%]\s*pip\s+install\s+(.*)$")
+
+
+CLONE = re.compile(r"^!\s*git\s+clone\s+(?:--\S+(?:\s+\S+)?\s+)*(\S+)")
+# `pip install .` or `pip install -e .`: SimulEval is cloned and installed
+# editable, and it is the same dependency either way
+LOCAL_INSTALL = re.compile(r"^!\s*cd\s+(\S+)\s*&&\s*pip\s+install\s+(?:-e\s+)?\.")
+
+
+def git_arguments(notebook) -> list:
+    """The repositories a notebook clones and then installs.
+
+    `!git clone URL` followed by `!cd name && pip install .` is one install
+    written as two shell lines, and it is how the course notebooks get VERSA
+    and ParallelWaveGAN - neither is on PyPI. The runner drops both lines, so
+    something has to tell CI, and asking the notebook keeps that in one place
+    like the rest.
+
+    Returned as `git+URL`, separately from pip_arguments because these want
+    `--no-build-isolation`: ParallelWaveGAN's setup.py imports pip, which an
+    isolated build environment does not have.
+
+    espnet itself is never returned. A demo pins a release, and a course
+    notebook that installs espnet from git is a bug to fix rather than a
+    dependency to honour.
+    """
+    cloned = {}
+    wanted = []
+    for cell in notebook.cells:
+        if cell.cell_type != "code":
+            continue
+        for joined, _ in logical_lines(cell.source):
+            clone = CLONE.match(joined.strip())
+            if clone:
+                url = clone.group(1)
+                cloned[url.rstrip("/").rsplit("/", 1)[-1].removesuffix(".git")] = url
+                continue
+            local = LOCAL_INSTALL.match(joined.strip())
+            if local:
+                url = cloned.get(local.group(1))
+                if url and "espnet/espnet" not in url:
+                    wanted.append(f"git+{url}")
+    return wanted
+
+
+def pip_arguments(notebook) -> list:
+    """What the notebook's own `pip install` lines ask for.
+
+    The runner installs the packages itself, so something has to say which.
+    Asking the notebook means there is one answer rather than two that drift:
+    a demo that starts needing `espnet[enh]` says so in the cell a reader
+    runs, and the workflow that checks it installs the same thing without
+    being told again.
+
+    A `git+` install is left out: those are the notebooks that have not been
+    pinned yet, and installing espnet from git here would test something other
+    than what a reader gets. Quoting is undone, because `espnet[enh]` has to
+    be quoted in the notebook and `pip install $(...)` would otherwise hand
+    pip a package name with quotation marks in it. A trailing comment goes,
+    and a command split over lines is read as the one command it is.
+
+    tools/README.md states all of this as a table, because a notebook author
+    writing an install cell is writing against it, and tests/ holds each row
+    as a case.
+    """
+    wanted = []
+    for cell in notebook.cells:
+        if cell.cell_type != "code":
+            continue
+        for joined, _ in logical_lines(cell.source):
+            match = PIP_LINE.match(joined)
+            if match and "git+" not in match.group(1):
+                # comments=True: a trailing `# why` is not three packages
+                wanted.extend(shlex.split(match.group(1), comments=True))
+    return wanted
 
 
 def localise(source: str) -> str:
@@ -93,6 +208,16 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=1800)
     parser.add_argument("--workdir", default=None)
     parser.add_argument("--kernel", default="python3")
+    parser.add_argument(
+        "--print-install",
+        action="store_true",
+        help="print what this notebook's pip lines ask for, and exit",
+    )
+    parser.add_argument(
+        "--print-git-install",
+        action="store_true",
+        help="print the repositories it clones and installs, as git+URL",
+    )
     args = parser.parse_args()
 
     import nbformat
@@ -100,6 +225,12 @@ def main() -> int:
     from nbclient.exceptions import CellExecutionError
 
     nb = nbformat.read(args.notebook, as_version=4)
+    if args.print_install:
+        print(" ".join(pip_arguments(nb)))
+        return 0
+    if args.print_git_install:
+        print(" ".join(git_arguments(nb)))
+        return 0
     kept = []
     for cell in nb.cells:
         if cell.cell_type != "code":
