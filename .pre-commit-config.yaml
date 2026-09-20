@@ -22,7 +22,7 @@ repos:
     hooks:
       - id: demos-layout
         name: Demos/ layout and pins
-        entry: python Demos/check_layout.py
+        entry: python tools/check_layout.py
         language: system
         pass_filenames: false
         files: ^Demos/
