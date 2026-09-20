@@ -21,6 +21,7 @@ One per task, flat in [`Demos/`](Demos), each short enough to read in a sitting.
 | [`enh_demo.ipynb`](Demos/enh_demo.ipynb) | Pull speech out of noise, and measure how much it helped |
 | [`spk_demo.ipynb`](Demos/spk_demo.ipynb) | Turn a voice into a vector, and score two recordings against each other |
 | [`codec_demo.ipynb`](Demos/codec_demo.ipynb) | Compress a waveform to a few integers a frame, rebuild it, count the bits |
+| [`sds_demo.ipynb`](Demos/sds_demo.ipynb) | Speech in, speech out, with a language model thinking in between |
 
 [`Demos/unmaintained/`](Demos/unmaintained) holds what was here before — the
 oldest from 2021, most of it no longer running, kept because some of it is

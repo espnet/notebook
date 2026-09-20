@@ -21,6 +21,7 @@ reason.
 | [`enh_demo.ipynb`](enh_demo.ipynb) | Pull speech out of noise, and measure how much it helped |
 | [`spk_demo.ipynb`](spk_demo.ipynb) | Turn a voice into a vector, and score two recordings against each other |
 | [`codec_demo.ipynb`](codec_demo.ipynb) | Compress a waveform to a few integers a frame, rebuild it, count the bits |
+| [`sds_demo.ipynb`](sds_demo.ipynb) | Speech in, speech out, with a language model thinking in between |
 
 ## The naming rule
 

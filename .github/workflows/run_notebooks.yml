@@ -46,6 +46,7 @@ jobs:
           - Demos/enh_demo.ipynb
           - Demos/spk_demo.ipynb
           - Demos/codec_demo.ipynb
+          - Demos/sds_demo.ipynb
           - Courses/CMUSpeechTechnology26S/speaker_verification.ipynb
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7

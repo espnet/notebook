@@ -14,7 +14,7 @@ import sys
 DEMOS = pathlib.Path(__file__).parents[1] / "Demos"
 UNMAINTAINED = DEMOS / "unmaintained"
 # the task names espnet2/tasks/ and espnet.load(task=...) use
-TASKS = ("asr", "s2t", "tts", "enh", "spk", "st", "codec", "slu", "diar")
+TASKS = ("asr", "s2t", "tts", "enh", "spk", "st", "codec", "slu", "diar", "sds")
 # <task>_demo.ipynb, or <task>_<variant>_demo.ipynb when a task has a second
 # angle worth its own page - asr_streaming_demo.ipynb against asr_demo.ipynb.
 # The variant is not a licence to multiply: every demo has to be listed in
