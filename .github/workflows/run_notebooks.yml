@@ -1,10 +1,12 @@
 # These notebooks rot quietly: a Colab page still opens, the cells still look
 # right, and the failure only appears when somebody runs them in class. So run
-# them here on a schedule instead, against the released espnet.
+# them here on a schedule instead, against the release the notebooks pin.
 #
-# Only the inference notebooks run: the two fine-tuning ones need a GPU to
-# finish in reasonable time, and the TTS one needs a vocoder package that does
-# not build on every runner. Add more as they prove they fit.
+# One notebook runs. speaker_verification is the one that fits a free runner:
+# no GPU, no package that has to be built, and it finishes well inside the
+# timeout. The others are each blocked on something of their own - see this
+# directory's README - and adding one means finding that out first, not
+# putting it in the matrix and hoping.
 
 name: run notebooks
 
@@ -44,9 +46,10 @@ jobs:
           set -euo pipefail
           python -m pip install --upgrade pip
           # the runner skips the notebooks' install cells, so install what
-          # they would have installed - from the same place they install it
-          # from, or a break on master would pass here and fail in Colab
-          python -m pip install "espnet[enh] @ git+https://github.com/espnet/espnet"
+          # they would have installed, pinned to the same release they pin -
+          # testing a different espnet from the one Colab gets would make a
+          # pass here mean nothing
+          python -m pip install "espnet[enh]==202610.post1"
           python -m pip install nbclient nbformat ipykernel \
             librosa scikit-learn matplotlib tqdm soundfile editdistance
 

@@ -28,12 +28,28 @@ the packages are already present, and replaces `wget` and `tar` with their
 Python equivalents.
 
 ```sh
-pip install espnet nbclient nbformat ipykernel librosa scikit-learn matplotlib
+pip install "espnet==202610.post1" nbclient nbformat ipykernel librosa \
+    scikit-learn matplotlib
 python run_notebook.py speaker_verification.ipynb
 ```
 
-`.github/workflows/run_notebooks.yml` runs the inference notebooks weekly, so
-a notebook that stops working is noticed here rather than in class.
+The notebooks pin that release rather than installing espnet from git. A course
+notebook is worth having because it does the same thing in April that it does
+today, and installing from `master` gives neither that nor a fast install: it
+builds from source, and a break on `master` the night before class is a break
+in class. Each release, the pin moves and the notebooks are run again.
+
+`.github/workflows/run_notebooks.yml` runs `speaker_verification.ipynb` every
+Sunday, so a notebook that stops working is noticed here rather than in class.
+
+**One of the five, not all five.** It is the one that fits a free runner: no
+GPU, nothing that has to be built, and it finishes inside the timeout. The
+others are each blocked on something of their own — `text_to_speech` builds a
+vocoder from source, `neural_codec` and `speech_translation` pin an old numpy
+and TensorFlow against the rest of the environment, `speech_enhancement` runs
+VERSA over several models. Until one of those is sorted out, the other four are
+checked by running them by hand, which is a worse guarantee and should be said
+plainly rather than implied.
 
 ## What was changed
 
