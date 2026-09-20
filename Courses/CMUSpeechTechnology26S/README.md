@@ -1,4 +1,4 @@
-# CMUSpeechTechnology26S
+# CMU Speech Technology 26S
 
 CMU 11492/11692/18495, *Speech Technology for Conversational AI*, Spring 2026.
 
@@ -13,13 +13,13 @@ against an ESPnet3 data API that has since changed, and both stop at
 `recipe_dir must be set when data_src is None`. They come back when they are
 updated to the current one.
 
-| Notebook | What it does |
-|---|---|
-| [`speaker_verification.ipynb`](speaker_verification.ipynb) | Speaker embeddings with ESPnet-SPK, verification by cosine similarity, and a simple diarization of a two-speaker mixture |
-| [`speech_enhancement.ipynb`](speech_enhancement.ipynb) | Enhancement of real noisy speech, separation of a two-speaker mixture, and scoring with VERSA and a pretrained ASR model |
-| [`neural_codec.ipynb`](neural_codec.ipynb) | Three pretrained neural codecs, the bitrate trade when streams are dropped, and VERSA scores for each |
-| [`speech_translation.ipynb`](speech_translation.ipynb) | Offline and simultaneous speech translation with ESPnet-ST-v2, scored with BLEU and SimulEval's latency metrics |
-| [`text_to_speech.ipynb`](text_to_speech.ipynb) | Single-speaker and multi-speaker synthesis, text2wav against text2mel plus a vocoder, and VERSA scores |
+| Notebook | | What it does |
+|---|---|---|
+| [`speaker_verification.ipynb`](speaker_verification.ipynb) | [![speaker_verification](https://github.com/espnet/notebook/actions/workflows/speaker_verification.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speaker_verification.yml) | Speaker embeddings with ESPnet-SPK, verification, and a simple diarization |
+| [`speech_enhancement.ipynb`](speech_enhancement.ipynb) | by hand | Enhancement and separation, scored with VERSA and a pretrained ASR model |
+| [`neural_codec.ipynb`](neural_codec.ipynb) | by hand | Three pretrained neural codecs and the bitrate trade between them |
+| [`speech_translation.ipynb`](speech_translation.ipynb) | by hand | Offline and simultaneous speech translation with ESPnet-ST-v2 |
+| [`text_to_speech.ipynb`](text_to_speech.ipynb) | by hand | Single-speaker and multi-speaker synthesis, and VERSA scores |
 
 ## Running them outside Colab
 

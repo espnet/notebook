@@ -59,9 +59,7 @@ def problems():
                 f"an old one in unmaintained/, and everything else in ../Courses/"
             )
     index = (DEMOS / "README.md").read_text(encoding="utf-8")
-    workflow = (
-        DEMOS.parent / ".github" / "workflows" / "run_notebooks.yml"
-    ).read_text(encoding="utf-8")
+    workflows = DEMOS.parent / ".github" / "workflows"
     for path in sorted(DEMOS.glob("*.ipynb")):
         if path.name not in index:
             found.append(
@@ -81,18 +79,31 @@ def problems():
         # letter n, so espnet[enh] failed a check the notebook passed.
         if not re.search(r"espnet(\[[a-z, ]+\])?==\d{6}", text):
             found.append(f"{path.name}: does not pin an espnet release")
-        # the badge is the claim that this notebook is run every week, and it
-        # is only true while the notebook is in the workflow's matrix
-        if "run_notebooks.yml/badge.svg" not in text:
+        # The badge is the claim that this notebook is run every week. One
+        # workflow per notebook, because a badge is per workflow - so the
+        # claim is true exactly when that workflow exists and names it.
+        workflow = workflows / f"{path.stem}.yml"
+        if not workflow.is_file():
             found.append(
-                f"{path.name}: carries no weekly-check badge. It is what tells "
-                f"a reader in Colab that this page is run rather than hoped for"
+                f"{path.name}: has no .github/workflows/{workflow.name}. A demo "
+                f"that nothing runs is the thing this directory is for not "
+                f"having, and the badge would be a lie"
             )
-        if path.name not in workflow:
+        elif f"notebook: {path.relative_to(DEMOS.parent)}" not in workflow.read_text(
+            encoding="utf-8"
+        ):
+            # the input it passes, not a mention of the path: the file also
+            # names its notebook in a comment and in `paths:`, and either
+            # would satisfy a looser check while the workflow ran another one
             found.append(
-                f"{path.name}: not in .github/workflows/run_notebooks.yml. A "
-                f"demo that nothing runs is the thing this directory is for "
-                f"not having"
+                f"{workflow.name}: does not name {path.name}. The badge on it "
+                f"is what the README shows beside that notebook"
+            )
+        if f"workflows/{path.stem}.yml/badge.svg" not in text:
+            found.append(
+                f"{path.name}: carries no badge for its own workflow. It is "
+                f"what tells a reader in Colab that this page is run rather "
+                f"than hoped for"
             )
     return found
 

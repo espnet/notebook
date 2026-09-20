@@ -1,0 +1,49 @@
+# Runs one notebook. Called by the per-notebook workflows beside this file.
+#
+# One workflow per notebook, rather than one matrix over all of them, because
+# a badge is per workflow: GitHub has no way to show the status of one job in
+# a matrix. A table of notebooks with a badge each is worth nine small files
+# that do nothing but name their notebook and call this.
+
+name: run one notebook
+
+on:
+  workflow_call:
+    inputs:
+      notebook:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      # See the espnet repository's CI: the default persists GITHUB_TOKEN in
+      # .git/config, and nothing here needs it.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          # the harness itself, before it can be asked anything
+          python -m pip install nbclient nbformat ipykernel \
+            librosa scikit-learn matplotlib tqdm soundfile editdistance
+          # then what this notebook's own pip lines ask for. The runner skips
+          # those cells, so installing a different espnet from the one a
+          # reader gets would make a pass here mean nothing.
+          python -m pip install $(python tools/run_notebook.py \
+            "${{ inputs.notebook }}" --print-install)
+
+      - name: Run ${{ inputs.notebook }}
+        run: python tools/run_notebook.py "${{ inputs.notebook }}" --timeout 4800

@@ -1,16 +1,14 @@
 # Demos
 
-[![Checked weekly](https://github.com/espnet/notebook/actions/workflows/run_notebooks.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/run_notebooks.yml)
 
 One notebook per task, each short enough to read in a sitting and run before
 you lose interest. Open one in Colab, run it top to bottom, hear or see the
 result.
 
-The badge is every notebook in the table below, executed cell by cell every
-Sunday against the release they pin. It is one badge for the set, so red means
-one of them broke rather than all of them — but it is earned: nothing goes in
-that table until it runs here. `unmaintained/` has no badge for the same
-reason.
+Each badge is that one notebook, executed cell by cell every Sunday against
+the release it pins — one workflow per notebook, since GitHub's badge cannot
+show a single job of a matrix. It is earned: nothing joins the table until it
+runs there, and `unmaintained/` has no badge for the same reason.
 
 ### What green means, and what it does not
 
@@ -36,16 +34,16 @@ accusation against the notebook. And the Sunday cadence means up to a week can
 pass before a break is noticed. `workflow_dispatch` is there for when you want
 the answer now.
 
-| Notebook | What it does |
-|---|---|
-| [`asr_demo.ipynb`](asr_demo.ipynb) | Transcribe speech with OWSM-CTC, and let it work out the language |
-| [`asr_streaming_demo.ipynb`](asr_streaming_demo.ipynb) | Watch the words appear while the audio is still arriving |
-| [`st_demo.ipynb`](st_demo.ipynb) | Translate English speech into German, French and Chinese — the same model |
-| [`tts_demo.ipynb`](tts_demo.ipynb) | Type a sentence, hear it spoken — one English voice, then 128 of them |
-| [`enh_demo.ipynb`](enh_demo.ipynb) | Pull speech out of noise, and measure how much it helped |
-| [`spk_demo.ipynb`](spk_demo.ipynb) | Turn a voice into a vector, and score two recordings against each other |
-| [`codec_demo.ipynb`](codec_demo.ipynb) | Compress a waveform to a few integers a frame, rebuild it, count the bits |
-| [`sds_demo.ipynb`](sds_demo.ipynb) | Speech in, speech out, with a language model thinking in between |
+| Notebook | | What it does |
+|---|---|---|
+| [`asr_demo.ipynb`](asr_demo.ipynb) | [![asr_demo](https://github.com/espnet/notebook/actions/workflows/asr_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/asr_demo.yml) | Transcribe speech with OWSM-CTC, and let it work out the language |
+| [`asr_streaming_demo.ipynb`](asr_streaming_demo.ipynb) | [![asr_streaming_demo](https://github.com/espnet/notebook/actions/workflows/asr_streaming_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/asr_streaming_demo.yml) | Watch the words appear while the audio is still arriving |
+| [`st_demo.ipynb`](st_demo.ipynb) | [![st_demo](https://github.com/espnet/notebook/actions/workflows/st_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/st_demo.yml) | Translate English speech into German, French and Chinese — the same model |
+| [`tts_demo.ipynb`](tts_demo.ipynb) | [![tts_demo](https://github.com/espnet/notebook/actions/workflows/tts_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/tts_demo.yml) | Type a sentence, hear it spoken — one English voice, then 128 of them |
+| [`enh_demo.ipynb`](enh_demo.ipynb) | [![enh_demo](https://github.com/espnet/notebook/actions/workflows/enh_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/enh_demo.yml) | Pull speech out of noise, and measure how much it helped |
+| [`spk_demo.ipynb`](spk_demo.ipynb) | [![spk_demo](https://github.com/espnet/notebook/actions/workflows/spk_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/spk_demo.yml) | Turn a voice into a vector, and score two recordings against each other |
+| [`codec_demo.ipynb`](codec_demo.ipynb) | [![codec_demo](https://github.com/espnet/notebook/actions/workflows/codec_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/codec_demo.yml) | Compress a waveform to a few integers a frame, rebuild it, count the bits |
+| [`sds_demo.ipynb`](sds_demo.ipynb) | [![sds_demo](https://github.com/espnet/notebook/actions/workflows/sds_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/sds_demo.yml) | Speech in, speech out, with a language model thinking in between |
 
 ## The naming rule
 
@@ -72,7 +70,8 @@ A task may have a second angle worth its own page, and then the name carries
 it: `asr_streaming_demo.ipynb` beside `asr_demo.ipynb`. That is not a licence
 to multiply — this directory filled up once with notebooks nobody could tell
 apart. Every demo has to appear in the table above with a line saying what it
-does, and `../tools/check_layout.py` fails if one does not, so a second page
+does, and `../tools/check_layout.py` fails if one does not, or if it has no workflow
+and badge of its own, so a second page
 cannot arrive without someone saying how it differs from the first.
 
 ## What a demo owes the reader
