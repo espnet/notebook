@@ -47,6 +47,24 @@ the install cell an interface, and this is what it supports.
 | `!apt-get install …`, `!cd repo && pip install .` | removed before the notebook is executed, because the runner is not Colab, but not treated as a Python dependency |
 | anything in a markdown cell | it is prose |
 
+### Cloned and installed
+
+A tool that is on nobody's index is fetched in two shell lines:
+
+```
+!git clone https://github.com/wavlab-speech/versa
+!cd versa && pip install .
+```
+
+`--print-git-install` returns those as `git+<url>`, and the workflow installs
+them with `--no-build-isolation` — ParallelWaveGAN's `setup.py` imports `pip`,
+which an isolated build environment does not have. `pip install -e .` counts
+the same, and a clone nobody installs is data rather than a dependency.
+
+espnet is never returned this way, whichever form it is written in: a demo pins
+a release, and a course notebook installing espnet from git is a bug to fix
+rather than a dependency to honour.
+
 `--print-install` prints exactly what it found, so the way to see what CI will
 install is to ask it:
 

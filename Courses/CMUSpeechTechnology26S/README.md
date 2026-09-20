@@ -16,10 +16,24 @@ updated to the current one.
 | Notebook | | What it does |
 |---|---|---|
 | [`speaker_verification.ipynb`](speaker_verification.ipynb) | [![speaker_verification](https://github.com/espnet/notebook/actions/workflows/speaker_verification.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speaker_verification.yml) | Speaker embeddings with ESPnet-SPK, verification, and a simple diarization |
-| [`speech_enhancement.ipynb`](speech_enhancement.ipynb) | by hand | Enhancement and separation, scored with VERSA and a pretrained ASR model |
-| [`neural_codec.ipynb`](neural_codec.ipynb) | by hand | Three pretrained neural codecs and the bitrate trade between them |
-| [`speech_translation.ipynb`](speech_translation.ipynb) | by hand | Offline and simultaneous speech translation with ESPnet-ST-v2 |
-| [`text_to_speech.ipynb`](text_to_speech.ipynb) | by hand | Single-speaker and multi-speaker synthesis, and VERSA scores |
+| [`text_to_speech.ipynb`](text_to_speech.ipynb) | [![text_to_speech](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml) | Single-speaker and multi-speaker synthesis, and VERSA scores |
+| [`speech_enhancement.ipynb`](speech_enhancement.ipynb) | needs Google Drive | Enhancement and separation, scored with VERSA and a pretrained ASR model |
+| [`neural_codec.ipynb`](neural_codec.ipynb) | VERSA's scorer | Three pretrained neural codecs and the bitrate trade between them |
+| [`speech_translation.ipynb`](speech_translation.ipynb) | not tried | Offline and simultaneous speech translation with ESPnet-ST-v2 |
+
+Two of the five run every Sunday. The other three are stopped by something
+outside the notebook, and it is worth naming which rather than calling it
+maintenance:
+
+- **`speech_enhancement`** fetches its noisy sample from Google Drive with
+  `gdown`. Everything else about it installs and runs; the audio does not
+  arrive. A sample that lived in a repository would fix this.
+- **`neural_codec`** gets as far as VERSA's scorer, which exits without
+  writing its output file — the metrics it runs want more than
+  `pip install versa` provides.
+- **`speech_translation`** has not been tried since the pins came out. It
+  clones SimulEval and ParallelWaveGAN and installs `pysndfile`, which is the
+  one that usually refuses to build.
 
 ## Running them outside Colab
 

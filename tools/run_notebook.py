@@ -78,6 +78,48 @@ def drop_installs(source: str) -> str:
 PIP_LINE = re.compile(r"^[!%]\s*pip\s+install\s+(.*)$")
 
 
+CLONE = re.compile(r"^!\s*git\s+clone\s+(?:--\S+(?:\s+\S+)?\s+)*(\S+)")
+# `pip install .` or `pip install -e .`: SimulEval is cloned and installed
+# editable, and it is the same dependency either way
+LOCAL_INSTALL = re.compile(r"^!\s*cd\s+(\S+)\s*&&\s*pip\s+install\s+(?:-e\s+)?\.")
+
+
+def git_arguments(notebook) -> list:
+    """The repositories a notebook clones and then installs.
+
+    `!git clone URL` followed by `!cd name && pip install .` is one install
+    written as two shell lines, and it is how the course notebooks get VERSA
+    and ParallelWaveGAN - neither is on PyPI. The runner drops both lines, so
+    something has to tell CI, and asking the notebook keeps that in one place
+    like the rest.
+
+    Returned as `git+URL`, separately from pip_arguments because these want
+    `--no-build-isolation`: ParallelWaveGAN's setup.py imports pip, which an
+    isolated build environment does not have.
+
+    espnet itself is never returned. A demo pins a release, and a course
+    notebook that installs espnet from git is a bug to fix rather than a
+    dependency to honour.
+    """
+    cloned = {}
+    wanted = []
+    for cell in notebook.cells:
+        if cell.cell_type != "code":
+            continue
+        for joined, _ in logical_lines(cell.source):
+            clone = CLONE.match(joined.strip())
+            if clone:
+                url = clone.group(1)
+                cloned[url.rstrip("/").rsplit("/", 1)[-1].removesuffix(".git")] = url
+                continue
+            local = LOCAL_INSTALL.match(joined.strip())
+            if local:
+                url = cloned.get(local.group(1))
+                if url and "espnet/espnet" not in url:
+                    wanted.append(f"git+{url}")
+    return wanted
+
+
 def pip_arguments(notebook) -> list:
     """What the notebook's own `pip install` lines ask for.
 
@@ -171,6 +213,11 @@ def main() -> int:
         action="store_true",
         help="print what this notebook's pip lines ask for, and exit",
     )
+    parser.add_argument(
+        "--print-git-install",
+        action="store_true",
+        help="print the repositories it clones and installs, as git+URL",
+    )
     args = parser.parse_args()
 
     import nbformat
@@ -180,6 +227,9 @@ def main() -> int:
     nb = nbformat.read(args.notebook, as_version=4)
     if args.print_install:
         print(" ".join(pip_arguments(nb)))
+        return 0
+    if args.print_git_install:
+        print(" ".join(git_arguments(nb)))
         return 0
     kept = []
     for cell in nb.cells:

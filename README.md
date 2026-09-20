@@ -38,16 +38,15 @@ the reader.
 CMU 11492/11692/18495, *Speech Technology for Conversational AI*, Spring 2026 —
 the demonstration notebooks, with the graded exercises removed. In
 [`Courses/CMUSpeechTechnology26S/`](Courses/CMUSpeechTechnology26S), which also
-says why four of the five are run by hand: each is blocked on something a free
-runner cannot do.
+says what stops the three that do not run weekly.
 
 | Notebook | | What it does |
 |---|---|---|
 | [`speaker_verification.ipynb`](Courses/CMUSpeechTechnology26S/speaker_verification.ipynb) | [![speaker_verification](https://github.com/espnet/notebook/actions/workflows/speaker_verification.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speaker_verification.yml) | Speaker embeddings with ESPnet-SPK, verification, and a simple diarization |
-| [`speech_enhancement.ipynb`](Courses/CMUSpeechTechnology26S/speech_enhancement.ipynb) | by hand | Enhancement and separation, scored with VERSA and a pretrained ASR model |
-| [`neural_codec.ipynb`](Courses/CMUSpeechTechnology26S/neural_codec.ipynb) | by hand | Three pretrained neural codecs and the bitrate trade between them |
-| [`speech_translation.ipynb`](Courses/CMUSpeechTechnology26S/speech_translation.ipynb) | by hand | Offline and simultaneous speech translation with ESPnet-ST-v2 |
-| [`text_to_speech.ipynb`](Courses/CMUSpeechTechnology26S/text_to_speech.ipynb) | by hand | Single-speaker and multi-speaker synthesis, and VERSA scores |
+| [`text_to_speech.ipynb`](Courses/CMUSpeechTechnology26S/text_to_speech.ipynb) | [![text_to_speech](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml) | Single-speaker and multi-speaker synthesis, and VERSA scores |
+| [`speech_enhancement.ipynb`](Courses/CMUSpeechTechnology26S/speech_enhancement.ipynb) | needs Google Drive | Enhancement and separation, scored with VERSA and a pretrained ASR model |
+| [`neural_codec.ipynb`](Courses/CMUSpeechTechnology26S/neural_codec.ipynb) | VERSA's scorer | Three pretrained neural codecs and the bitrate trade between them |
+| [`speech_translation.ipynb`](Courses/CMUSpeechTechnology26S/speech_translation.ipynb) | not tried | Offline and simultaneous speech translation with ESPnet-ST-v2 |
 
 ### Earlier courses
 

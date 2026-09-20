@@ -123,3 +123,45 @@ def test_a_multiline_install_goes_entirely():
 )
 def test_the_other_installs_go_too(line):
     assert _module().drop_installs(f"x = 1\n{line}\ny = 2") == "x = 1\ny = 2"
+
+
+# --- what it clones and installs --------------------------------------------
+
+
+def git_install(*sources):
+    return _module().git_arguments(notebook(*sources))
+
+
+def test_a_clone_then_install_is_one_dependency():
+    source = ("!git clone https://github.com/wavlab-speech/versa\n"
+              "!cd versa && pip install .")
+    assert git_install(source) == ["git+https://github.com/wavlab-speech/versa"]
+
+
+def test_the_clone_may_be_in_another_cell():
+    assert git_install(
+        "!git clone https://github.com/wavlab-speech/versa.git",
+        "!cd versa && pip install .",
+    ) == ["git+https://github.com/wavlab-speech/versa.git"]
+
+
+def test_an_editable_install_counts():
+    source = ("!git clone https://github.com/facebookresearch/SimulEval.git\n"
+              "!cd SimulEval && pip install -e .")
+    assert git_install(source) == ["git+https://github.com/facebookresearch/SimulEval.git"]
+
+
+def test_clone_flags_do_not_confuse_it():
+    source = ("!git clone --depth 5 https://github.com/ftshijt/ParallelWaveGAN.git\n"
+              "!cd ParallelWaveGAN && pip install .")
+    assert git_install(source) == ["git+https://github.com/ftshijt/ParallelWaveGAN.git"]
+
+
+def test_a_clone_nobody_installs_is_data_not_a_dependency():
+    assert git_install("!git clone https://github.com/ftshijt/versa_demo_egs") == []
+
+
+def test_espnet_from_git_is_never_a_dependency():
+    source = ("!git clone https://github.com/espnet/espnet\n"
+              "!cd espnet && pip install .")
+    assert git_install(source) == []

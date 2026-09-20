@@ -44,6 +44,14 @@ jobs:
           # reader gets would make a pass here mean nothing.
           python -m pip install $(python tools/run_notebook.py \
             "${{ inputs.notebook }}" --print-install)
+          # and what it clones and installs - VERSA and ParallelWaveGAN are
+          # on nobody's index. --no-build-isolation because ParallelWaveGAN's
+          # setup.py imports pip, which an isolated build does not have.
+          from_git=$(python tools/run_notebook.py \
+            "${{ inputs.notebook }}" --print-git-install)
+          if [ -n "$from_git" ]; then
+            python -m pip install --no-build-isolation $from_git
+          fi
 
       - name: Run ${{ inputs.notebook }}
         run: python tools/run_notebook.py "${{ inputs.notebook }}" --timeout 4800
