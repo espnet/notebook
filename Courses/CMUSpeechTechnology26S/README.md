@@ -2,8 +2,9 @@
 
 CMU 11492/11692/18495, *Speech Technology for Conversational AI*, Spring 2026.
 
-The demonstration notebooks from the course. Open one in Colab and run it top
-to bottom; they run on CPU.
+The demonstration notebooks from the course. Open one in Colab, **choose a GPU
+runtime**, and run it top to bottom. They work on CPU — that is what the weekly
+run checks — but fine-tuning and the larger models are much slower there.
 
 | Notebook | | What it does |
 |---|---|---|
