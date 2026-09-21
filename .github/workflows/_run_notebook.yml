@@ -22,6 +22,19 @@ on:
         required: false
         type: string
         default: "{}"
+      # A notebook for something that has merged but not shipped pins the
+      # release that will carry it, and pip cannot install a version PyPI does
+      # not have yet. With this, the job says so and stops, instead of failing
+      # on an install nobody can fix from here. The alternative - installing
+      # espnet from git - would check something other than what a reader gets,
+      # which is the one thing tools/README.md says this must not do.
+      # The notebook's own workflow sets it and names the release it waits
+      # for; a run that is still skipping weeks later is a pin nobody
+      # finished.
+      allow_unreleased_pin:
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -45,17 +58,38 @@ jobs:
           python-version: "3.12"
 
       - name: Install
+        id: install
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
           # the harness itself, before it can be asked anything
           python -m pip install nbclient nbformat ipykernel \
             librosa scikit-learn matplotlib tqdm soundfile editdistance
+          # The release the notebook pins has to be on PyPI. It is not, for a
+          # notebook written between a feature merging and the release that
+          # carries it - see allow_unreleased_pin above.
+          asked=$(python tools/run_notebook.py \
+            "${{ inputs.notebook }}" --print-install)
+          pinned=$(printf '%s\n' $asked \
+            | grep -E '^espnet(\[[a-z,]+\])?==' || true)
+          version=${pinned##*==}
+          if [ -n "$version" ] && ! curl -sf -o /dev/null \
+              "https://pypi.org/pypi/espnet/$version/json"; then
+            if [ "${{ inputs.allow_unreleased_pin }}" != "true" ]; then
+              echo "::error::this notebook pins espnet $version, which is" \
+                "not on PyPI"
+              exit 1
+            fi
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "espnet $version is not on PyPI yet, so there is nothing to" \
+              "install and nothing to run: this notebook is waiting for that" \
+              "release." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
           # then what this notebook's own pip lines ask for. The runner skips
           # those cells, so installing a different espnet from the one a
           # reader gets would make a pass here mean nothing.
-          python -m pip install $(python tools/run_notebook.py \
-            "${{ inputs.notebook }}" --print-install)
+          python -m pip install $asked
           # and what it clones and installs - VERSA and ParallelWaveGAN are
           # on nobody's index. --no-build-isolation because ParallelWaveGAN's
           # setup.py imports pip, which an isolated build does not have.
@@ -66,4 +100,5 @@ jobs:
           fi
 
       - name: Run ${{ inputs.notebook }}
+        if: steps.install.outputs.skip != 'true'
         run: python tools/run_notebook.py "${{ inputs.notebook }}" --timeout 4800
