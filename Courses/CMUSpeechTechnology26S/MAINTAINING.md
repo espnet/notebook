@@ -5,6 +5,25 @@ have to work out by running them. The notebooks themselves are the
 documentation for what they teach; this file is for whoever keeps them
 running.
 
+## What the badges check
+
+Each notebook has a workflow of its own and runs every Sunday, cell by cell,
+against the release it pins, so a badge is that notebook and nothing else: a
+red one names the notebook that broke rather than the batch it was in.
+
+`speech_recognition` is the exception. Fine-tuning does not fit a free
+runner, so its workflow shrinks the run through the environment - eight
+utterances instead of a split, two steps instead of three hundred - and its
+workflow is named `speech_recognition (short run)`, which is what the badge
+then says. **Green there means the notebook installs, finds its data and
+still agrees with ESPnet3's API. It does not mean the fine-tuning worked, or
+that the numbers printed in the notebook come out again.** Nothing in CI
+checks those. A reader who opens it gets the full run, and the notebook says
+the same in its first cell.
+
+What the environment variables are, and which each workflow sets, is in
+`.github/workflows/`.
+
 ## Running them outside Colab
 
 `../../tools/run_notebook.py` executes one of them here: it skips the install

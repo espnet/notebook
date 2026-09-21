@@ -2,8 +2,8 @@
 
 CMU 11492/11692/18495, *Speech Technology for Conversational AI*, Spring 2026.
 
-The demonstration notebooks from the course, kept here so that they keep
-working. Open one in Colab and run it top to bottom; they run on CPU.
+The demonstration notebooks from the course. Open one in Colab and run it top
+to bottom; they run on CPU.
 
 | Notebook | | What it does |
 |---|---|---|
@@ -12,14 +12,7 @@ working. Open one in Colab and run it top to bottom; they run on CPU.
 | [`text_to_speech.ipynb`](text_to_speech.ipynb) | [![text_to_speech](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml) | Single-speaker and multi-speaker synthesis, and VERSA scores |
 | [`neural_codec.ipynb`](neural_codec.ipynb) | [![neural_codec](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml) | Three pretrained neural codecs and the bitrate trade between them |
 | [`speech_translation.ipynb`](speech_translation.ipynb) | [![speech_translation](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml) | Offline and simultaneous speech translation with ESPnet-ST-v2 |
-| [`speech_recognition.ipynb`](speech_recognition.ipynb) | [![speech_recognition](https://github.com/espnet/notebook/actions/workflows/speech_recognition.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_recognition.yml) | Fine-tune OWSM on one language of FLEURS with the ESPnet3 trainer (**short run** in CI) |
-
-Each runs every Sunday, cell by cell, against the release it pins, and the
-badge is that notebook alone. `speech_recognition` is the exception worth
-knowing about: fine-tuning does not fit a free runner, so its weekly run is a
-two-step one and its badge says *(short run)*. Green there means the notebook
-installs, finds its data and still agrees with ESPnet3 — not that the
-fine-tuning was reproduced. Open it and you get the full run.
+| [`speech_recognition.ipynb`](speech_recognition.ipynb) | [![speech_recognition](https://github.com/espnet/notebook/actions/workflows/speech_recognition.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_recognition.yml) | Fine-tune OWSM on one language of FLEURS with the ESPnet3 trainer |
 
 ## Credit
 
@@ -29,6 +22,6 @@ demonstrations intact and the grading removed.
 
 ## For maintainers
 
-[`MAINTAINING.md`](MAINTAINING.md) has how to run these outside Colab, what
-was changed from the course originals, and which recordings had to be
-replaced and why.
+[`MAINTAINING.md`](MAINTAINING.md) has what the badges check and what they do
+not, how to run these outside Colab, what was changed from the course
+originals, and which recordings had to be replaced and why.

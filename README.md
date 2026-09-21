@@ -36,9 +36,8 @@ the reader.
 ### CMU Speech Technology 26S
 
 CMU 11492/11692/18495, *Speech Technology for Conversational AI*, Spring 2026 —
-the demonstration notebooks, with the graded exercises removed. In
-[`Courses/CMUSpeechTechnology26S/`](Courses/CMUSpeechTechnology26S), which also
-says why the fine-tuning badge is labelled *(short run)*.
+the demonstration notebooks, with the graded exercises removed, in
+[`Courses/CMUSpeechTechnology26S/`](Courses/CMUSpeechTechnology26S).
 
 | Notebook | | What it does |
 |---|---|---|
@@ -47,7 +46,7 @@ says why the fine-tuning badge is labelled *(short run)*.
 | [`text_to_speech.ipynb`](Courses/CMUSpeechTechnology26S/text_to_speech.ipynb) | [![text_to_speech](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/text_to_speech.yml) | Single-speaker and multi-speaker synthesis, and VERSA scores |
 | [`neural_codec.ipynb`](Courses/CMUSpeechTechnology26S/neural_codec.ipynb) | [![neural_codec](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/neural_codec.yml) | Three pretrained neural codecs and the bitrate trade between them |
 | [`speech_translation.ipynb`](Courses/CMUSpeechTechnology26S/speech_translation.ipynb) | [![speech_translation](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_translation.yml) | Offline and simultaneous speech translation with ESPnet-ST-v2 |
-| [`speech_recognition.ipynb`](Courses/CMUSpeechTechnology26S/speech_recognition.ipynb) | [![speech_recognition](https://github.com/espnet/notebook/actions/workflows/speech_recognition.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_recognition.yml) | Fine-tune OWSM on one language of FLEURS with the ESPnet3 trainer (**short run** in CI) |
+| [`speech_recognition.ipynb`](Courses/CMUSpeechTechnology26S/speech_recognition.ipynb) | [![speech_recognition](https://github.com/espnet/notebook/actions/workflows/speech_recognition.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/speech_recognition.yml) | Fine-tune OWSM on one language of FLEURS with the ESPnet3 trainer |
 
 ### Earlier courses
 
