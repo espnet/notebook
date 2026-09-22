@@ -1,0 +1,31 @@
+# Demos/s2t_pr_demo.ipynb, every Sunday. The badge on this workflow is what
+# the README shows beside that notebook, which is why it has a file of its own:
+# GitHub's badge is per workflow, and cannot show one job of a matrix.
+
+name: s2t_pr_demo
+
+on:
+  schedule:
+    # Sundays, 05:00 UTC
+    - cron: "0 5 * * 0"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "Demos/s2t_pr_demo.ipynb"
+      - "tools/**"
+      - ".github/workflows/s2t_pr_demo.yml"
+      - ".github/workflows/_run_notebook.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    uses: ./.github/workflows/_run_notebook.yml
+    with:
+      notebook: Demos/s2t_pr_demo.ipynb
+      # POWSM's <g2p> and <p2g> reach the page through espnet2.bin.demo, and
+      # this notebook pins the release that carries them (espnet#6791 cuts
+      # it). Until it is on PyPI the job says so and skips. Delete this line
+      # when 202610.post2 is published.
+      allow_unreleased_pin: true
