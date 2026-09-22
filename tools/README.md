@@ -47,6 +47,29 @@ the install cell an interface, and this is what it supports.
 | `!apt-get install …`, `!cd repo && pip install .` | removed before the notebook is executed, because the runner is not Colab, but not treated as a Python dependency |
 | anything in a markdown cell | it is prose |
 
+### Pinned to a release that is not out yet
+
+A demo for something that has merged but has not shipped pins the release that
+will carry it, and pip cannot install a version PyPI does not have. The
+notebook's workflow says so:
+
+```yaml
+    with:
+      notebook: Demos/s2t_align_demo.ipynb
+      # espnet2.bin.align merged after v.202610.post1 was tagged
+      allow_unreleased_pin: true
+```
+
+and the run stops after installing the harness, with a line in the job summary
+saying which release it is waiting for, rather than failing on an install
+nobody can fix from here. Without the flag, a pin PyPI does not have is an
+error naming the version - a typo should not pass quietly.
+
+What this does **not** do is install espnet from git, for the reason in the
+table above: a pass here would then say nothing about what a reader gets. The
+line is temporary by construction. A run that is still skipping weeks later is
+a pin nobody finished, and the badge is a skip rather than a green tick.
+
 ### Cloned and installed
 
 A tool that is on nobody's index is fetched in two shell lines:
