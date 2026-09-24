@@ -24,9 +24,3 @@ jobs:
     uses: ./.github/workflows/_run_notebook.yml
     with:
       notebook: Demos/s2t_align_demo.ipynb
-      # espnet2.bin.align merged after v.202610.post1 was tagged, so the
-      # release this notebook pins does not exist yet (espnet#6791 cuts it).
-      # Until then the job says so and skips. Delete this line when
-      # 202610.post2 is on PyPI - and if it is still here a month from now,
-      # the pin was never finished.
-      allow_unreleased_pin: true

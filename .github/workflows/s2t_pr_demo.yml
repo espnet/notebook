@@ -24,8 +24,3 @@ jobs:
     uses: ./.github/workflows/_run_notebook.yml
     with:
       notebook: Demos/s2t_pr_demo.ipynb
-      # POWSM's <g2p> and <p2g> reach the page through espnet2.bin.demo, and
-      # this notebook pins the release that carries them (espnet#6791 cuts
-      # it). Until it is on PyPI the job says so and skips. Delete this line
-      # when 202610.post2 is published.
-      allow_unreleased_pin: true
