@@ -24,6 +24,6 @@ jobs:
     uses: ./.github/workflows/_run_notebook.yml
     with:
       notebook: Demos/diar_vad_demo.ipynb
-      # espnet2.bin.vad and the TCN encoder are not in a release yet: the
+      # the VAD classes in espnet2.bin.diar_inference are not in a release yet: the
       # notebook pins the one that will carry them
       allow_unreleased_pin: true
