@@ -24,6 +24,7 @@ One per task, flat in [`Demos/`](Demos), each short enough to read in a sitting.
 | [`spk_demo.ipynb`](Demos/spk_demo.ipynb) | [![spk_demo](https://github.com/espnet/notebook/actions/workflows/spk_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/spk_demo.yml) | Turn a voice into a vector, and score two recordings against each other |
 | [`codec_demo.ipynb`](Demos/codec_demo.ipynb) | [![codec_demo](https://github.com/espnet/notebook/actions/workflows/codec_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/codec_demo.yml) | Compress a waveform to a few integers a frame, rebuild it, count the bits |
 | [`sds_demo.ipynb`](Demos/sds_demo.ipynb) | [![sds_demo](https://github.com/espnet/notebook/actions/workflows/sds_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/sds_demo.yml) | Speech in, speech out, with a language model thinking in between |
+| [`sds_latency_demo.ipynb`](Demos/sds_latency_demo.ipynb) | [![sds_latency_demo](https://github.com/espnet/notebook/actions/workflows/sds_latency_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/sds_latency_demo.yml) | Time each stage of a spoken dialogue system, VAD to TTS, then talk to it |
 
 [`Demos/unmaintained/`](Demos/unmaintained) holds what was here before — the
 oldest from 2021, most of it no longer running, kept because some of it is
