@@ -26,7 +26,7 @@ green or red according to those too:
 | the pinned espnet release, from PyPI | the pin is exact, so this does not move |
 | its dependency tree | **not pinned** — a new torch or numpy can break a demo with nothing changed here, and that is a real signal, not a false alarm |
 | the checkpoints, from the Hugging Face Hub | a model that is renamed, made private or deleted turns the run red; most are in the `espnet` organization, and `asr_streaming_demo` uses one copied there for that reason |
-| `transformers` and the LLM in `sds_demo` | outside ESPnet entirely |
+| `transformers` and the LLM in `sds_demo` and `sds_latency_demo` | outside ESPnet entirely |
 | the sample audio, from the espnet repository | moved or renamed, the run goes red |
 
 So a red badge is a question — which of those changed? — rather than an
@@ -46,6 +46,7 @@ the answer now.
 | [`spk_demo.ipynb`](spk_demo.ipynb) | [![spk_demo](https://github.com/espnet/notebook/actions/workflows/spk_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/spk_demo.yml) | Turn a voice into a vector, and score two recordings against each other |
 | [`codec_demo.ipynb`](codec_demo.ipynb) | [![codec_demo](https://github.com/espnet/notebook/actions/workflows/codec_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/codec_demo.yml) | Compress a waveform to a few integers a frame, rebuild it, count the bits |
 | [`sds_demo.ipynb`](sds_demo.ipynb) | [![sds_demo](https://github.com/espnet/notebook/actions/workflows/sds_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/sds_demo.yml) | Speech in, speech out, with a language model thinking in between |
+| [`sds_latency_demo.ipynb`](sds_latency_demo.ipynb) | [![sds_latency_demo](https://github.com/espnet/notebook/actions/workflows/sds_latency_demo.yml/badge.svg)](https://github.com/espnet/notebook/actions/workflows/sds_latency_demo.yml) | Time each stage of a spoken dialogue system, VAD to TTS, then talk to it |
 
 ## The naming rule
 

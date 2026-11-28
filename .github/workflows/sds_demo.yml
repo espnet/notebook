@@ -24,3 +24,7 @@ jobs:
     uses: ./.github/workflows/_run_notebook.yml
     with:
       notebook: Demos/sds_demo.ipynb
+      # v.202611 lacks what this notebook uses: the OWSM-CTC transcript fix and
+      # the LLM's stream() (espnet/espnet#7037, #7038) and FrontiaVADModel
+      # (espnet/espnet#7039); 202611.post1 is to carry them
+      allow_unreleased_pin: true

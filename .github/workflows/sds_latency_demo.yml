@@ -1,0 +1,30 @@
+# Demos/sds_latency_demo.ipynb, every Sunday. The badge on this workflow is what the
+# README shows beside that notebook, which is why it has a file of its own:
+# GitHub's badge is per workflow, and cannot show one job of a matrix.
+
+name: sds_latency_demo
+
+on:
+  schedule:
+    # Sundays, 05:00 UTC
+    - cron: "0 5 * * 0"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "Demos/sds_latency_demo.ipynb"
+      - "tools/**"
+      - ".github/workflows/sds_latency_demo.yml"
+      - ".github/workflows/_run_notebook.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    uses: ./.github/workflows/_run_notebook.yml
+    with:
+      notebook: Demos/sds_latency_demo.ipynb
+      # v.202611 lacks what this notebook uses: the OWSM-CTC transcript fix and
+      # the LLM's stream() (espnet/espnet#7037, #7038) and FrontiaVADModel
+      # (espnet/espnet#7039); 202611.post1 is to carry them
+      allow_unreleased_pin: true
